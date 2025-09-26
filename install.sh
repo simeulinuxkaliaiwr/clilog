@@ -12,6 +12,15 @@ TEMP_BIN_FILE="/tmp/clilog.tmp"
 
 echo "Iniciando a instalação do Clilog no sistema (requer sudo)..."
 
+if [[ -f "$BIN_DIR/clilog" ]]; then
+	read -rp "Clilog is already installed. Wants to update/overwrite? (y/n): " update
+	if [[ ! "$update" =~ ^[yY]$ ]]; then
+		echo "Installation canceled by user, exiting..."
+		exit 0
+	fi
+fi
+
+
 echo "Criando diretórios de destino: $BIN_DIR e $LIB_DIR"
 sudo mkdir -p "$BIN_DIR"
 sudo mkdir -p "$LIB_DIR"
