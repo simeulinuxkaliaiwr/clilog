@@ -7,7 +7,7 @@ source "/usr/local/lib/clilog/functions.sh"
 COMMAND="${1:-}"
 
 case "$COMMAND" in
-    add|done|undo|del)
+    add|done|undo|del|search)
         if [ $# -lt 2 ]; then
             echo "Error: The command '$COMMAND' requires arguments. Try 'clilog $COMMAND <value>'."
             exit 1
@@ -48,5 +48,8 @@ case "$COMMAND" in
     version)
         _clilog_show_version
         ;;
+    search)
+    	_clilog_search_notes "$@"
+	;;
 esac
 

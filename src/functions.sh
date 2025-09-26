@@ -33,6 +33,7 @@ COMMANDS:
   undo [ID]        Unmarks a completed note, returning it to pending.
   del [ID]         Permanently deletes a specific note.
   clear            Clears ALL notes after security confirmation.
+  search	   Search for a especific note
   version          Shows the current version of Clilog.
   help             Shows this help message.
 
@@ -100,6 +101,30 @@ _clilog_clear_notes() {
             exit 0
             ;;
     esac
+}
+
+_clilog_search_notes() {
+	local file="$HOME/.config/clilog/notes.log"
+	local keyword="$1"
+	[[ ! -f "$file" ]] && { echo "Nenhuma nota encontrada."; return; }
+	printf "Resultados da busca por $keyword:\n"
+	grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
+        id = NR
+        
+        gsub(keyword, "\033[36m&\033[0m", $0) 
+        
+        if ($1 == "[X]") {
+            printf "\033[32m%d. %s\033[0m\n", id, $0
+        } else {
+            printf "\033[33m%d. %s\033[0m\n", id, $0
+        }
+    }'
+
+    # Se grep não encontrar nada, o awk não gera saída,
+    # verificação externa simples:
+    if [ $? -ne 0 ]; then
+        echo "Nenhuma nota encontrada para a busca."
+    fi
 }
 
 _clilog_del_line() {
