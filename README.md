@@ -16,6 +16,7 @@ The primary goal of `clilog` is to provide a task management tool that is native
 | **`clilog clear`** | Clears **ALL** notes after a safety confirmation prompt. | `clilog clear` |
 | **`clilog help`** | Displays the help menu and the full list of commands. | `clilog help` |
 | **`clilog version`** | Shows the current version of Clilog. | `clilog version` |
+| **`clilog search`** | Search for a especific note | clilog search "learn"
 
 ---
 
