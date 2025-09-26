@@ -25,7 +25,7 @@ Since `clilog` is designed to be a system-wide utility, installation uses global
 
 1.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/](https://github.com/)[YOUR_USERNAME]/clilog.git
+    git clone https://github.com/simeulinuxkaliaiwr/clilog.git
     cd clilog
     ```
 
