@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+source "/usr/local/lib/clilog/functions.sh"
+
+COMMAND="${1:-}"
+
+case "$COMMAND" in
+    add|done|undo|del)
+        if [ $# -lt 2 ]; then
+            echo "Error: The command '$COMMAND' requires arguments. Try 'clilog $COMMAND <value>'."
+            exit 1
+        fi
+        shift 
+        ;;
+    list|clear|version)
+        ;;
+    *)
+        _clilog_show_help
+	;;
+esac
+
+_clilog_setup
+
+case "$COMMAND" in
+    add)
+        _clilog_add_note "$@"
+        ;;
+    list)
+        _clilog_list_notes
+        ;;
+    done)
+        _clilog_mark_done "$@"
+        ;;
+    undo)
+        _clilog_undo "$@"
+        ;;
+    clear)
+        _clilog_clear_notes
+        ;;
+    del)
+        _clilog_del_line "$@"
+        ;;
+    help)
+    	_clilog_show_help
+	;;
+    version)
+        _clilog_show_version
+        ;;
+esac
+

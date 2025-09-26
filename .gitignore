@@ -1,0 +1,11 @@
+# Logs
+*.log
+
+# Arquivos temporários
+*.tmp
+*.swp
+
+# Configs locais
+*.bak
+*.DS_Store
+
