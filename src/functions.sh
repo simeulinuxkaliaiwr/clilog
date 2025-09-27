@@ -104,15 +104,15 @@ _clilog_clear_notes() {
 }
 
 _clilog_search_notes() {
-	local file="$CLILOG_DIR"
-	local keyword="$1"
-	[[ ! -f "$file" ]] && { echo "No notes found."; return; }
-	printf "Resultados da busca por $keyword:\n"
-	grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
+    local file="$CLILOG_LOG"   # 👈 O caminho do arquivo, não da pasta
+    local keyword="$1"
+
+    [[ ! -f "$file" ]] && { echo "No notes found."; return; }
+
+    printf "Resultados da busca por '%s':\n" "$keyword"
+    grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
         id = NR
-        
-        gsub(keyword, "\033[36m&\033[0m", $0) 
-        
+        gsub(keyword, "\033[36m&\033[0m", $0)
         if ($1 == "[X]") {
             printf "\033[32m%d. %s\033[0m\n", id, $0
         } else {
@@ -120,9 +120,7 @@ _clilog_search_notes() {
         }
     }'
 
-    # if grep finds nothing, awk generates no output,
-    # simple external check:
-    if [ $? -ne 0 ]; then
+    if [ ${PIPESTATUS[0]} -ne 0 ]; then
         echo "No notes found for the search."
     fi
 }
