@@ -2,7 +2,11 @@
 
 set -euo pipefail
 
-source "/usr/local/lib/clilog/functions.sh"
+if [[ ! -f "/usr/local/lib/clilog/functions.sh" ]]; then
+	echo "Error: Clilog is not installed yet, run the script install.sh for installation."
+fi
+
+source "/usr/local/lib/clilog/functions.sh" 2>/dev/null
 
 COMMAND="${1:-}"
 
@@ -14,7 +18,7 @@ case "$COMMAND" in
         fi
         shift 
         ;;
-    list|clear|version)
+    list|clear|version|help)
         ;;
     *)
         _clilog_show_help
