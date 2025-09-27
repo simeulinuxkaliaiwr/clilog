@@ -104,7 +104,7 @@ _clilog_clear_notes() {
 }
 
 _clilog_search_notes() {
-	local file="$HOME/.config/clilog/notes.log"
+	local file="$CLILOG_DIR"
 	local keyword="$1"
 	[[ ! -f "$file" ]] && { echo "Nenhuma nota encontrada."; return; }
 	printf "Resultados da busca por $keyword:\n"
