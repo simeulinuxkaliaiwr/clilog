@@ -106,7 +106,7 @@ _clilog_clear_notes() {
 _clilog_search_notes() {
 	local file="$CLILOG_DIR"
 	local keyword="$1"
-	[[ ! -f "$file" ]] && { echo "Nenhuma nota encontrada."; return; }
+	[[ ! -f "$file" ]] && { echo "No notes found."; return; }
 	printf "Resultados da busca por $keyword:\n"
 	grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
         id = NR
@@ -120,10 +120,10 @@ _clilog_search_notes() {
         }
     }'
 
-    # Se grep não encontrar nada, o awk não gera saída,
-    # verificação externa simples:
+    # if grep finds nothing, awk generates no output,
+    # simple external check:
     if [ $? -ne 0 ]; then
-        echo "Nenhuma nota encontrada para a busca."
+        echo "No notes found for the search."
     fi
 }
 
@@ -136,7 +136,7 @@ _clilog_del_line() {
     awk -v id="$id" 'NR != id { print }' "$CLILOG_LOG" > "$CLILOG_LOG.tmp" && \
     mv "$CLILOG_LOG.tmp" "$CLILOG_LOG"
 
-    echo "🗑️ Note $id deleted!"
+    echo "Note $id deleted!"
 }
 
 _clilog_show_version() {
