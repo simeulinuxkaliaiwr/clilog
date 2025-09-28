@@ -64,6 +64,7 @@ This makes it easy to back up, manually inspect, and integrate with other comman
 | :--- | :--- |
 | **`bin/clilog`** | The main router and executable. Handles argument validation and directs execution to the correct function. |
 | **`src/functions.sh`** | Contains all the data manipulation logic (add, list, mark) using **`awk`** for secure file editing. |
+| **`src/interactive.sh`** | Provides the interactive TUI mode using **`dialog`** for a more user-friendly terminal interface.
 | **`install.sh`** | Script responsible for copying files to the global directories (`/usr/local/`). |
 
 ---
