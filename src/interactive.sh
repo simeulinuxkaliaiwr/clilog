@@ -153,4 +153,3 @@ _clilog_tui_search_note() {
     	dialog --msgbox "$results" 15 60 2>&1 >/dev/tty
 }
 
-main_menu
