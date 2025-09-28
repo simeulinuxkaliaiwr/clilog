@@ -22,7 +22,7 @@ _clilog_add_note() {
 
 _clilog_show_help() {
     printf "\n\033[1;36mClilog - CLI Task Manager \033[0m\n"
-    printf "\033[90mVersion:\033[0m 0.1\n\n"
+    printf "\033[90mVersion:\033[0m 0.2\n\n"
     printf "\033[1mUSAGE:\033[0m clilog <command> [arguments]\n\n"
 
     printf "\033[1mCOMMANDS:\033[0m\n"
@@ -38,6 +38,7 @@ _clilog_show_help() {
     printf "  \033[32mtag add [id] [tag]\033[0m   - Add a tag to a note.\n"
     printf "  \033[32mtag remove [id] [tag]\033[0m       - Remove a tag from a note.\n"
     printf "  \033[32mtag move [id] [old_tag] [new_tag]\033[0m    - Rename/Move a tag on a note.\n"
+    printf "  \033[32minteractive \033[0m      - Enter the TUI mode of clilog.\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
@@ -242,7 +243,7 @@ _clilog_del_line() {
 }
 
 _clilog_show_version() {
-    local version="0.1"
+    local version="0.2"
     echo "Clilog | Version: $version"
 }
 

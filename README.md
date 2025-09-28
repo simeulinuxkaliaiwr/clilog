@@ -16,11 +16,12 @@ The primary goal of `clilog` is to provide a task management tool that is native
 | **`clilog clear`** | Clears **ALL** notes after a safety confirmation prompt. | `clilog clear` |
 | **`clilog help`** | Displays the help menu and the full list of commands. | `clilog help` |
 | **`clilog version`** | Shows the current version of Clilog. | `clilog version` |
-| **`clilog search`** | Search for a especific note | clilog search "learn"
-| **`clilog edit [ID]`** | Edit a especific note (by ID) | clilog edit 4 |
+| **`clilog search`** | Search for a specific note | clilog search "learn"
+| **`clilog edit [ID]`** | Edit a specific note (by ID) | clilog edit 4 |
 | **`clilog tag add [id] [tag]`** | Add a tag to a note. | clilog tag add 2 anime |
 | **`clilog tag remove [id] [tag]`** | Remove a tag from a note | clilog tag remove 2 anime |
 | **`clilog tag move [id] [old_tag] [new_tag]`** | Rename/Move a tag on a note | clilog tag move 3 anime movie |
+| **`clilog interactive`** | Enter the TUI (interactive) mode with menu-driven interface | `clilog interactive`|
 
 ---
 
