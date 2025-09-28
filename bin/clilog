@@ -6,12 +6,12 @@ if [[ ! -f "/usr/local/lib/clilog/functions.sh" ]]; then
 	echo "Error: Clilog is not installed yet, run the script install.sh for installation."
 fi
 
-source "/usr/local/lib/clilog/functions.sh" 2>/dev/null
+source "/usr/local/lib/clilog/functions.sh"
 
 COMMAND="${1:-}"
 
 case "$COMMAND" in
-    add|done|undo|del|search)
+    add|done|undo|del|search|edit)
         if [ $# -lt 2 ]; then
             echo "Error: The command '$COMMAND' requires arguments. Try 'clilog $COMMAND <value>'."
             exit 1
@@ -54,6 +54,9 @@ case "$COMMAND" in
         ;;
     search)
     	_clilog_search_notes "$@"
+	;;
+    edit)
+	_clilog_edit_notes "$@"
 	;;
 esac
 

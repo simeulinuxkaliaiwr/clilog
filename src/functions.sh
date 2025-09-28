@@ -131,6 +131,40 @@ _clilog_search_notes() {
         echo "No notes found for the search."
     fi
 }
+
+_clilog_edit_notes() {
+	local file="$CLILOG_LOG"
+	local line
+	line=$(wc -l < "$file")
+	local id="$1"
+	[[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
+	[[ -z "$id" ]] && { echo "Id not specified, exiting..."; return 1; }
+	if (( id > line )); then
+		echo "Error: The id you specified is greater than the number of notes you have, exiting..."
+		return 1
+	fi
+	echo "Which editor would you like to use?"
+	cat <<EOF
+	1 = Vim
+	2 = Nano
+	3 = Neovim
+	4 = Emacs
+	5 = Vscode
+EOF
+	read -rp "Your choice: " choice
+	if [[ -z "$choice" ]] || [[ ! "$choice" =~ ^[1-5]$ ]]; then
+		echo "Error: Your choice must be one of the 5 options, exiting..."
+		return 1
+	fi
+	case $choice in
+		1) vim +"$id" "$file" ;;
+		2) nano +"$id" "$file" ;;
+		3) nvim +"$id" "$file" ;;
+		4) emacs +"$id" "$file" ;;
+		5) code --goto "$file:$id" ;;
+	esac	
+}
+
 _clilog_del_line() {
     local id="$1"
     
