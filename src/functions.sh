@@ -34,6 +34,10 @@ _clilog_show_help() {
     printf "  \033[32mclear\033[0m           - Clears ALL notes after security confirmation.\n"
     printf "  \033[32msearch [keyword]\033[0m - Searches for a specific note.\n"
     printf "  \033[32mversion\033[0m         - Shows the current version.\n"
+    printf "  \033[32medit [ID]\033[0m            - Edits a task by ID.\n"
+    printf "  \033[32mtag add [id] [tag]\033[0m   - Add a tag to a note.\n"
+    printf "  \033[32mtag remove [id] [tag]\033[0m       - Remove a tag from a note.\n"
+    printf "  \033[32mtag move [id] [old_tag] [new_tag]\033[0m    - Rename/Move a tag on a note.\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
@@ -145,6 +149,52 @@ _clilog_search_notes() {
         echo "No notes found for the search."
     fi
 }
+
+_clilog_tag_notes() {
+    local action="$1"   
+    local note_id="$2"
+    local tag="$3"    
+    local new_tag="$4" 
+
+    [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
+    [[ -z "$note_id" ]] && { echo "Note ID not specified, exiting..."; return 1; }
+    [[ ! "$note_id" =~ ^[0-9]+$ ]] && { echo "Note ID must be a number, exiting..."; return 1; }
+
+    local tmpfile
+    tmpfile=$(mktemp)
+
+    case "$action" in
+        add)
+            awk -v id="$note_id" -v tag="$tag" 'NR==id {
+                if($0 !~ "#"tag) $0=$0" #"tag
+            }1' "$CLILOG_LOG" > "$tmpfile"
+            mv "$tmpfile" "$CLILOG_LOG"
+            echo "Tag #$tag added to note $note_id."
+            ;;
+        remove)
+            awk -v id="$note_id" -v tag="$tag" 'NR==id {
+                gsub("#"tag,"")
+            }1' "$CLILOG_LOG" > "$tmpfile"
+            mv "$tmpfile" "$CLILOG_LOG"
+            echo "Tag #$tag removed from note $note_id."
+            ;;
+        move)
+            [[ -z "$new_tag" ]] && { echo "New tag not specified for move, exiting..."; return 1; }
+            awk -v id="$note_id" -v old="$tag" -v new="$new_tag" 'NR==id {
+                gsub("#"old,"");
+                if($0 !~ "#"new) $0=$0" #"new
+            }1' "$CLILOG_LOG" > "$tmpfile"
+            mv "$tmpfile" "$CLILOG_LOG"
+            echo "Tag #$tag moved to #$new_tag in note $note_id."
+            ;;
+        *)
+            echo "Invalid action! Use add, remove or move."
+            rm -f "$tmpfile"
+            return 1
+            ;;
+    esac
+}
+
 
 _clilog_edit_notes() {
 	local file="$CLILOG_LOG"

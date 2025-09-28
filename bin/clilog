@@ -18,7 +18,7 @@ case "$COMMAND" in
         fi
         shift 
         ;;
-    list|clear|version|help)
+    list|clear|version|help|tag)
         ;;
     *)
         _clilog_show_help
@@ -37,6 +37,22 @@ case "$COMMAND" in
     done)
         _clilog_mark_done "$@"
         ;;
+    tag)
+    	subcmd="${2:-}"  # pega o segundo argumento de fato
+    	note_id="${3:-}" # terceiro argumento
+    	tag_name="${4:-}" # quarto argumento (ou new tag se move)
+    
+   	 case "$subcmd" in
+        	add|remove|move)
+            		_clilog_tag_notes "$subcmd" "$note_id" "$tag_name" "${5:-}"
+            		;;
+        	*)
+            		echo "Error: Invalid tag command. Use add, remove, or move."
+            		exit 1
+            		;;
+         esac
+   	 ;;
+
     undo)
         _clilog_undo "$@"
         ;;
