@@ -60,9 +60,16 @@ _clilog_list_notes() {
 
 _clilog_mark_done() {
     local id="$1"
-    
+    local file
+    file="$CLILOG_LOG"
+    local line
+    line=$(wc -l "$id" < "$file")
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
     [[ -z "$id" ]] && { echo "ID not specified, exiting..."; return 1; }
+    if (( id > line )); then
+	    echo "Error: The id you specified is greater than the number of notes you have, exiting..."
+	    return 1
+    fi
 
     awk -v id="$id" 'NR == id { sub(/\[ \]/, "[X]") } { print }' "$CLILOG_LOG" > "$CLILOG_LOG.tmp"
 
@@ -73,9 +80,16 @@ _clilog_mark_done() {
 
 _clilog_undo() {
     local id="$1" 
-    
+    local file
+    file="$CLILOG_LOG"
+    local line
+    line=$(wc -l "$id" < "$file")
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
     [[ -z "$id" ]] && { echo "ID not specified, exiting..."; return 1; }
+    if (( id > line )); then
+	    echo "Error: The id you specified is greater than the number of notes you have, exiting..."
+	    return 1
+    fi
 
     awk -v id="$id" 'NR == id { sub(/\[X\]/, "[ ]") } { print }' "$CLILOG_LOG" > "$CLILOG_LOG.tmp"
 
