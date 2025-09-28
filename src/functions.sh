@@ -67,7 +67,7 @@ _clilog_mark_done() {
     local file
     file="$CLILOG_LOG"
     local line
-    line=$(wc -l "$id" < "$file")
+    line=$(wc -l < "$file")
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
     [[ -z "$id" ]] && { echo "ID not specified, exiting..."; return 1; }
     if (( id > line )); then
@@ -87,7 +87,7 @@ _clilog_undo() {
     local file
     file="$CLILOG_LOG"
     local line
-    line=$(wc -l "$id" < "$file")
+    line=$(wc -l < "$file")
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
     [[ -z "$id" ]] && { echo "ID not specified, exiting..."; return 1; }
     if (( id > line )); then
