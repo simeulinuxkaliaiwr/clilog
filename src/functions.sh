@@ -104,27 +104,33 @@ _clilog_clear_notes() {
 }
 
 _clilog_search_notes() {
-    local file="$CLILOG_LOG"   
+    local file="$CLILOG_LOG"
     local keyword="$1"
 
     [[ ! -f "$file" ]] && { echo "No notes found."; return; }
 
     printf "Resultados da busca por '%s':\n" "$keyword"
-    grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
-        id = NR
-        gsub(keyword, "\033[36m&\033[0m", $0)
-        if ($1 == "[X]") {
-            printf "\033[32m%d. %s\033[0m\n", id, $0
+    cat -n "$file" | grep -i "$keyword" | awk -v keyword="$keyword" '{
+        id = $1 
+        
+        $1 = ""; 
+        line_content = $0
+        
+        sub(/^  */, "", line_content); 
+
+        gsub(keyword, "\033[36m&\033[0m", line_content)
+
+        if (line_content ~ /^\[X\]/) {
+            printf "\033[32m%d. %s\033[0m\n", id, line_content
         } else {
-            printf "\033[33m%d. %s\033[0m\n", id, $0
+            printf "\033[33m%d. %s\033[0m\n", id, line_content
         }
     }'
-
-    if [ ${PIPESTATUS[0]} -ne 0 ]; then
+    
+    if [ ${PIPESTATUS[1]} -ne 0 ]; then
         echo "No notes found for the search."
     fi
 }
-
 _clilog_del_line() {
     local id="$1"
     
