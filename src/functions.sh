@@ -21,25 +21,25 @@ _clilog_add_note() {
 }
 
 _clilog_show_help() {
-	cat <<EOF
-Clilog - CLI Task Manager
+    printf "\n\033[1;36mClilog - CLI Task Manager \033[0m\n"
+    printf "\033[90mVersion:\033[0m 0.1\n\n"
+    printf "\033[1mUSAGE:\033[0m clilog <command> [arguments]\n\n"
 
-USAGE: clilog <command> [arguments]
+    printf "\033[1mCOMMANDS:\033[0m\n"
+    printf "  \033[32madd [text]\033[0m       - Adds a new note/task.\n"
+    printf "  \033[32mlist\033[0m            - Lists all notes, showing their IDs and status.\n"
+    printf "  \033[32mdone [ID]\033[0m       - Marks a specific note (by ID) as completed.\n"
+    printf "  \033[32mundo [ID]\033[0m       - Unmarks a completed note, returning it to pending.\n"
+    printf "  \033[32mdel [ID]\033[0m        - Permanently deletes a specific note.\n"
+    printf "  \033[32mclear\033[0m           - Clears ALL notes after security confirmation.\n"
+    printf "  \033[32msearch [keyword]\033[0m - Searches for a specific note.\n"
+    printf "  \033[32mversion\033[0m         - Shows the current version.\n"
+    printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
-COMMANDS:
-  add [text]       Adds a new note/task.
-  list             Lists all notes, showing their IDs and status.
-  done [ID]        Marks a specific note (by ID) as completed.
-  undo [ID]        Unmarks a completed note, returning it to pending.
-  del [ID]         Permanently deletes a specific note.
-  clear            Clears ALL notes after security confirmation.
-  search	   Search for a especific note
-  version          Shows the current version of Clilog.
-  help             Shows this help message.
-
-The ID is the line number, checked with 'clilog list'.
-EOF
-	exit 1
+    printf "\033[1mEXAMPLES:\033[0m\n"
+    printf "  clilog add \"Learn C\" \n"
+    printf "  clilog done 2\n"
+    printf "  clilog search \"Jujutsu\"\n\n"
 }
 
 _clilog_list_notes() {
@@ -104,7 +104,7 @@ _clilog_clear_notes() {
 }
 
 _clilog_search_notes() {
-    local file="$CLILOG_LOG"   # 👈 O caminho do arquivo, não da pasta
+    local file="$CLILOG_LOG"   
     local keyword="$1"
 
     [[ ! -f "$file" ]] && { echo "No notes found."; return; }
