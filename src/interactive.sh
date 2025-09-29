@@ -16,7 +16,8 @@ main_menu() {
         6 "Clears ALL notes" \
         7 "Search for a especific note" \
         8 "Edit a task by ID" \
-        9 "Exit interactive mode" \
+	9 "Export notes to file (md, json, csv.)" \
+        10 "Exit interactive mode" \
         2>&1 >/dev/tty)
 
         case "$choice" in
@@ -28,7 +29,8 @@ main_menu() {
             6) _clilog_tui_clear_note ;;
             7) _clilog_tui_search_note ;;
             8) _clilog_tui_edit_note ;;
-            9)
+            9) _clilog_tui_export_notes ;;
+	    10)
                 dialog --msgbox "Exiting interactive mode..." 8 70 2>&1 >/dev/tty
                 break
                 ;;
@@ -152,3 +154,36 @@ _clilog_tui_search_note() {
     	dialog --msgbox "$results" 15 60 2>&1 >/dev/tty
 }
 
+_clilog_tui_export_notes() {
+    local format
+    local file
+    file=$(dialog --backtitle "Clilog interactive TUI Mode" --inputbox "Enter the name (or ABSOLUTE path) of the file where you want to export your notes:" 6 60 2>&1 >/dev/tty)
+    [[ -z "$file" ]] && { dialog --msgbox "Error: You did not specify the file!" 8 50 2>&1 >/dev/tty; return; }
+    
+    format=$(dialog --backtitle "CLilog Interactive TUI Mode" --menu "Choose a format:" 15 60 3 \
+        1 "Markdown (.md)" \
+        2 "Json (.json)" \
+        3 "Csv (.csv)" \
+        2>&1 >/dev/tty)
+    
+    case $format in
+        1)
+            _clilog_export_md "$file"
+	    if [[ $? -ne 1 ]]; then
+	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
+	    fi
+            ;;
+        2)
+            _clilog_export_json "$file"
+	    if [[ $? -ne 1 ]]; then
+	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
+	    fi
+            ;;
+        3)
+            _clilog_export_csv "$file"
+	    if [[ $? -ne 1 ]]; then
+	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
+	    fi
+            ;;
+    esac
+}
