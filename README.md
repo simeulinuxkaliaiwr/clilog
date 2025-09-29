@@ -2,6 +2,8 @@
 
 **clilog** is a fast, minimal, and open-source Command Line Interface (CLI) utility, built **in Bash And Python**, that allows you to efficiently manage notes, reminders, and to-do lists without relying on complex external software or databases.
 
+**Clilog was made by a 13 year old Linux user!**
+
 It’s designed to be a native Unix task management tool with a focus on **speed**, **simplicity**, and **minimalism**.
 
 `clilog` is also available on the **AUR** as [`clilog-git`](https://aur.archlinux.org/packages/clilog-git/) for Arch Linux users.
