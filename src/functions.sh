@@ -39,6 +39,7 @@ _clilog_show_help() {
     printf "  \033[32mtag remove [id] [tag]\033[0m       - Remove a tag from a note.\n"
     printf "  \033[32mtag move [id] [old_tag] [new_tag]\033[0m    - Rename/Move a tag on a note.\n"
     printf "  \033[32minteractive \033[0m      - Enter the TUI mode of clilog.\n"
+    printf "  \033[32mexport [file] [format]\033[0m - Export notes to file (markdown, json, csv).\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
@@ -240,6 +241,193 @@ _clilog_del_line() {
     mv "$CLILOG_LOG.tmp" "$CLILOG_LOG"
 
     echo "Note $id deleted!"
+}
+
+_clilog_export() {
+    local output_file="$1"
+    local format="$2"
+    local notes_file="$CLILOG_LOG"
+
+    [[ ! -f "$notes_file" ]] && { echo "No notes found!"; return 1; }
+    [[ ! -s "$notes_file" ]] && { echo "No notes to export!"; return 1; }
+
+    case "${format:-markdown}" in
+        markdown|md)
+            _clilog_export_md "$output_file"
+            ;;
+        json)
+            _clilog_export_json "$output_file"
+            ;;
+        csv)
+            _clilog_export_csv "$output_file"
+            ;;
+        *)
+            echo "Error: Format '$format' not supported. Use: markdown, json, csv"
+            return 1
+            ;;
+    esac
+}
+
+_clilog_export_json() {
+    local output_file="$1"
+    local notes_file="$CLILOG_LOG"
+    
+    echo "[" > "$output_file"
+    
+    awk '
+    function escape_string(str) {
+        gsub(/"/, "\\\"", str)
+        gsub(/\//, "\\/", str)
+        gsub(/\t/, "\\t", str)
+        gsub(/\n/, "\\n", str)
+        gsub(/\r/, "\\r", str)
+        return str
+    }
+    
+    {
+        status = ($1 == "[X]") ? "completed" : "pending"
+        
+        gsub(/^\[X\] |^\[ \] /, "")
+        
+        # Extrai timestamp (formato: (YYYY-MM-DD HH:MM))
+        timestamp = ""
+        if (match($0, /\([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}\)/)) {
+            timestamp = substr($0, RSTART+1, RLENGTH-2)
+            # Remove o timestamp do conteúdo principal
+            $0 = substr($0, 1, RSTART-1) substr($0, RSTART+RLENGTH)
+        }
+        
+        tag_count = 0
+        delete tags
+        original_line = $0
+        while (match(original_line, /#([a-zA-Z0-9_]+)/)) {
+            tag = substr(original_line, RSTART+1, RLENGTH-1)
+            tags[++tag_count] = tag
+            # Remove esta tag da string para a próxima iteração
+            original_line = substr(original_line, 1, RSTART-1) substr(original_line, RSTART+RLENGTH)
+        }
+        
+        content = $0
+        gsub(/\s+$/, "", content)          
+        printf "  {\n"
+        printf "    \"id\": %d,\n", NR
+        printf "    \"status\": \"%s\",\n", status
+        printf "    \"timestamp\": \"%s\",\n", timestamp
+        printf "    \"content\": \"%s\",\n", escape_string(content)
+        printf "    \"tags\": ["
+        for (i = 1; i <= tag_count; i++) {
+            if (i > 1) printf ", "
+            printf "\"%s\"", tags[i]
+        }
+        printf "]\n"
+        printf "  }%s\n", (NR == total) ? "" : ","
+    }
+    ' total=$(wc -l < "$notes_file") "$notes_file" >> "$output_file"
+    
+    echo "]" >> "$output_file"
+    
+    echo "📁 Exported to JSON: $output_file"
+    echo "📊 Total notes: $(wc -l < "$notes_file")"
+}
+
+_clilog_export_md() {
+    local output_file="${1:-clilog_export.md}"
+    local notes_file="$CLILOG_LOG"
+
+    [[ ! -f "$notes_file" ]] && { echo "No notes found!"; return 1; }
+    [[ ! -s "$notes_file" ]] && { echo "No notes to export!"; return 1; }
+
+    local total_notes completed pending
+    total_notes=$(wc -l < "$notes_file")
+    completed=$(grep -c "^\[X\]" "$notes_file" || true)
+    pending=$((total_notes - completed))
+
+    {
+        echo "# 🧠 Clilog Tasks Export"
+        echo ""
+        echo "**Export Date:** $(date '+%Y-%m-%d %H:%M')"
+        echo "**Total Tasks:** $total_notes"
+        echo "**Completed:** $completed • **Pending:** $pending"
+        echo "**Completion:** $((total_notes > 0 ? (completed * 100) / total_notes : 0))%"
+        echo ""
+        
+        if (( completed > 0 )); then
+            echo "## ✅ Completed Tasks ($completed)"
+            grep "^\[X\]" "$notes_file" | while read -r line; do
+                local processed_line=$(echo "$line" | sed '
+                    s/^\[X\]/(✅)/;
+                    s/#\([a-zA-Z0-9_]*\)/`#\1`/g;
+                    s/(\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} [0-9]\{2\}:[0-9]\{2\}\))/**\1**/
+                ')
+                echo "- $processed_line"
+            done
+            echo ""
+        fi
+
+        if (( pending > 0 )); then
+            echo "## 🕐 Pending Tasks ($pending)"
+            grep "^\[ \]" "$notes_file" | while read -r line; do
+                local processed_line=$(echo "$line" | sed '
+                    s/^\[ \]/(⏳)/;
+                    s/#\([a-zA-Z0-9_]*\)/`#\1`/g;
+                    s/(\([0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} [0-9]\{2\}:[0-9]\{2\}\))/**\1**/
+                ')
+                echo "- $processed_line"
+            done
+            echo ""
+        fi
+
+        echo "## 🏷️ Tags Summary"
+        local tags
+        tags=$(grep -o '#[a-zA-Z0-9_]*' "$notes_file" | sort | uniq -c | sort -nr | head -10)
+        if [[ -n "$tags" ]]; then
+            echo "$tags" | while read -r count tag; do
+                echo "- **$tag**: $count tasks"
+            done
+        else
+            echo "No tags found."
+        fi
+        
+        echo ""
+        echo "---"
+        echo "*Generated by [clilog](https://github.com/simeulinuxkaliaiwr/clilog)*"
+
+    } > "$output_file"
+
+    echo "Exported $total_notes tasks to $output_file"
+    echo "Stats: $completed completed, $pending pending"
+}
+
+_clilog_export_csv() {
+    local output_file="$1"
+    local notes_file="$CLILOG_LOG"
+    
+    echo "id,status,timestamp,content,tags" > "$output_file"
+    awk '
+    {
+        status = ($1 == "[X]") ? "completed" : "pending"
+        gsub(/^\[X\] |^\[ \] /, "")
+        
+        # Extrai timestamp
+        if (match($0, /\([0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}\)/)) {
+            timestamp = substr($0, RSTART+1, RLENGTH-2)
+            $0 = substr($0, 1, RSTART-1) substr($0, RSTART+RLENGTH)
+        }
+        
+        # Extrai tags
+        tags = ""
+        while (match($0, /#([a-zA-Z0-9_]+)/)) {
+            if (tags != "") tags = tags ";"
+            tags = tags substr($0, RSTART+1, RLENGTH-1)
+            $0 = substr($0, 1, RSTART-1) substr($0, RSTART+RLENGTH)
+        }
+        
+        gsub(/"/, "\"\"", $0)
+        printf "%d,%s,\"%s\",\"%s\",\"%s\"\n", NR, status, timestamp, $0, tags
+    }
+    ' "$notes_file" >> "$output_file"
+    
+    echo "📊 Exported to CSV: $output_file"
 }
 
 _clilog_show_version() {

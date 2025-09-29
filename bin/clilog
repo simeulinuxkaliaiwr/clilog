@@ -16,7 +16,7 @@ source "$LIB_PATH/interactive.sh"
 COMMAND="${1:-}"
 
 case "$COMMAND" in
-    add|done|undo|del|search|edit)
+    add|done|undo|del|search|edit|export)
         if [ $# -lt 2 ]; then
             echo "Error: The command '$COMMAND' requires arguments. Try 'clilog $COMMAND <value>'."
             exit 1
@@ -78,6 +78,9 @@ case "$COMMAND" in
 	;;
     edit)
 	_clilog_edit_notes "$@"
+	;;
+    export)
+        _clilog_export "$@"
 	;;
     interactive)
     	main_menu
