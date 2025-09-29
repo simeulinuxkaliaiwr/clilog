@@ -85,6 +85,6 @@ This allows for easy backups, manual inspection, and seamless integration with o
 
 ## 🤝 Contributions
 
-Contributions are welcome! Whether 
+Contributions are welcome! 
 
 ---
