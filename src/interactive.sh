@@ -7,7 +7,7 @@ source "/usr/local/lib/clilog/functions.sh"
 main_menu() {
     local choice
     while true; do
-        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.2" --menu "Choose a action" 15 60 9 \
+        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.3" --menu "Choose a action" 15 60 9 \
         1 "Add note" \
         2 "Del note" \
         3 "List notes" \
