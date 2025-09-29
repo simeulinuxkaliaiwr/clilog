@@ -71,7 +71,6 @@ _clilog_tui_del_note() {
     line=$(wc -l < "$file")
     if (( id > line )); then
         dialog --msgbox "Error: The ID you specified is greater then the number of notes you have" 15 60 2>&1 >/dev/tty
-        return 1
     fi
     _clilog_del_line "$id"
     dialog --msgbox "Note deleted successfully!" 8 50 2>&1 >/dev/tty
