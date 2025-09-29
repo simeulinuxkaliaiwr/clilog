@@ -40,7 +40,7 @@ _clilog_show_help() {
     printf "  \033[32mtag move [id] [old_tag] [new_tag]\033[0m    - Rename/Move a tag on a note.\n"
     printf "  \033[32minteractive \033[0m      - Enter the TUI mode of clilog.\n"
     printf "  \033[32mexport [file] [format]\033[0m - Export notes to file (markdown, json, csv).\n"
-    printf "  \033[32web\033[0m -  Starts the new clilog web mode (made with python).\n"
+    printf "  \033[32mweb\033[0m -  Starts the new clilog web mode (made with python).\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
