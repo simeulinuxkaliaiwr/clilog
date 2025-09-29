@@ -8,6 +8,7 @@ LIB_DIR="/usr/local/lib/clilog"
 SOURCE_BIN="./bin/clilog"
 SOURCE_LIB="./src/functions.sh"
 SOURCE_TUI="./src/interactive.sh"
+SOURCE_WEB="./src/clilog_web.py"
 
 TEMP_BIN_FILE="/tmp/clilog.tmp"
 
@@ -31,12 +32,14 @@ sudo sed -i "s|source \".*functions.sh\"|source \"$LIB_DIR/functions.sh\"|" "$TE
 
 echo "Copying files..."
 sudo cp "$SOURCE_LIB" "$LIB_DIR/"
-sudo cp "$SOURCE_TUI" "$LIB_DIR/"  # Copy TUI as well
+sudo cp "$SOURCE_TUI" "$LIB_DIR/"
+sudo cp "$SOURCE_WEB" "$LIB_DIR/"
 sudo cp "$TEMP_BIN_FILE" "$BIN_DIR/clilog"
 
 echo "Setting execution permissions..."
 sudo chmod +x "$BIN_DIR/clilog"
 sudo chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
+sudo chmod +x "$LIB_DIR/clilog_web.py" 
 
 rm "$TEMP_BIN_FILE"
 

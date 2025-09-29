@@ -12,7 +12,8 @@ else
 fi
 
 source "$LIB_PATH/functions.sh"
-source "$LIB_PATH/interactive.sh" 
+source "$LIB_PATH/interactive.sh"
+
 COMMAND="${1:-}"
 
 case "$COMMAND" in
@@ -23,7 +24,7 @@ case "$COMMAND" in
         fi
         shift 
         ;;
-    list|clear|version|help|tag|interactive)
+    list|clear|version|help|tag|interactive|web)
         ;;
     *)
         _clilog_show_help
@@ -81,6 +82,9 @@ case "$COMMAND" in
 	;;
     export)
         _clilog_export "$@"
+	;;
+    web)
+    	python3 "$LIB_PATH/clilog_web.py"
 	;;
     interactive)
     	main_menu
