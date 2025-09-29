@@ -1,76 +1,89 @@
-# 🚀 clilog: Manage Your Tasks Right From the Terminal (CLI Log)
+# 🚀 clilog: Manage Your Tasks Directly From the Terminal (CLI Log)
 
-**clilog** is a simple, fast, and open-source Command Line Interface (CLI) utility, built 100% in **Bash**, designed to efficiently manage notes, reminders, and to-do lists without relying on complex external software or databases.
+**clilog** is a fast, minimal, and open-source Command Line Interface (CLI) utility, built **100% in Bash**, that allows you to efficiently manage notes, reminders, and to-do lists without relying on complex external software or databases.
 
-The primary goal of `clilog` is to provide a task management tool that is native to the Unix environment, offering **speed** and **minimalism**.
+It’s designed to be a native Unix task management tool with a focus on **speed**, **simplicity**, and **minimalism**.
+
+`clilog` is also available on the **AUR** as [`clilog-git`](https://aur.archlinux.org/packages/clilog-git/) for Arch Linux users.
+
+---
 
 ## ✨ Key Features
 
 | Command | Description | Usage Example |
 | :--- | :--- | :--- |
 | **`clilog add [text]`** | Adds a new note or task with a creation timestamp. | `clilog add "Configure the new server"` |
-| **`clilog list`** | Lists all notes, displaying their IDs and status with color coding. | `clilog list` |
+| **`clilog list`** | Lists all notes, showing IDs and status with color coding. | `clilog list` |
 | **`clilog done [ID]`** | Marks a specific task (by ID) as **completed** (`[X]`). | `clilog done 5` |
 | **`clilog undo [ID]`** | Reverts a completed task back to **pending** (`[ ]`). | `clilog undo 5` |
 | **`clilog del [ID]`** | Permanently deletes a specific note by its ID. | `clilog del 3` |
-| **`clilog clear`** | Clears **ALL** notes after a safety confirmation prompt. | `clilog clear` |
-| **`clilog help`** | Displays the help menu and the full list of commands. | `clilog help` |
-| **`clilog version`** | Shows the current version of Clilog. | `clilog version` |
-| **`clilog search`** | Search for a specific note | clilog search "learn"
-| **`clilog edit [ID]`** | Edit a specific note (by ID) | clilog edit 4 |
-| **`clilog tag add [id] [tag]`** | Add a tag to a note. | clilog tag add 2 anime |
-| **`clilog tag remove [id] [tag]`** | Remove a tag from a note | clilog tag remove 2 anime |
-| **`clilog tag move [id] [old_tag] [new_tag]`** | Rename/Move a tag on a note | clilog tag move 3 anime movie |
-| **`clilog interactive`** | Enter the TUI (interactive) mode with menu-driven interface | `clilog interactive`|
+| **`clilog clear`** | Clears **ALL** notes after a confirmation prompt. | `clilog clear` |
+| **`clilog help`** | Displays the help menu with all commands. | `clilog help` |
+| **`clilog version`** | Shows the current version of clilog. | `clilog version` |
+| **`clilog search [text]`** | Search for a specific note. | `clilog search "learn"` |
+| **`clilog edit [ID]`** | Edit a specific note by its ID. | `clilog edit 4` |
+| **`clilog tag add [ID] [tag]`** | Add a tag to a note. | `clilog tag add 2 anime` |
+| **`clilog tag remove [ID] [tag]`** | Remove a tag from a note. | `clilog tag remove 2 anime` |
+| **`clilog tag move [ID] [old_tag] [new_tag]`** | Rename or move a tag on a note. | `clilog tag move 3 anime movie` |
+| **`clilog interactive`** | Enter interactive TUI mode with a menu-driven interface. | `clilog interactive` |
 
 ---
 
-## 🛠️ Installation (Recommended Method)
+## 🛠️ Installation (Recommended)
 
-Since `clilog` is designed to be a system-wide utility, installation uses global directories (`/usr/local/bin` and `/usr/local/lib`) and therefore **requires `sudo` privileges**.
+Since `clilog` is intended as a system-wide utility, it uses global directories (`/usr/local/bin` and `/usr/local/lib`) and therefore **requires `sudo` privileges**.
 
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/simeulinuxkaliaiwr/clilog.git
-    cd clilog
-    ```
+1. **Clone the Repository:**
+```bash
+git clone https://github.com/simeulinuxkaliaiwr/clilog.git
+cd clilog
+```
 
-2.  **Execute the Installer:**
-    The `install.sh` script will copy the binary to `/usr/local/bin` and the logic module to `/usr/local/lib/clilog`.
-    ```bash
-    chmod +x install.sh
-    sudo ./install.sh
-    ```
+2. **Run the Installer:**
+The `install.sh` script copies the executable to `/usr/local/bin` and the logic module to `/usr/local/lib/clilog`.
+```bash
+chmod +x install.sh
+sudo ./install.sh
+```
 
-After installation, you can use the `clilog` command from any directory.
+After installation, `clilog` can be run from any directory.
+
+Alternatively, Arch Linux users can install it via the **AUR**:
+```bash
+yay -S clilog-git
+```
 
 ---
 
-## 💾 Where Your Data Lives
+## 💾 Data Storage
 
-Instead of cluttering your `$HOME` directory, `clilog` adheres to the **XDG Base Directory Specification** for data persistence.
+`clilog` follows the **XDG Base Directory Specification**, keeping your `$HOME` directory clean.
 
-Your notes are saved in a simple plaintext log file:
+Notes are saved in a simple plaintext log file:
 
-$$\mathbf{\$HOME/.config/clilog/notes.log}$$
+```
+$HOME/.config/clilog/notes.log
+```
 
-This makes it easy to back up, manually inspect, and integrate with other command-line tools like `grep` and `cat`.
+This allows for easy backups, manual inspection, and seamless integration with other command-line tools like `grep` and `cat`.
+
+---
 
 ## ⚙️ Project Structure
 
-`clilog` is split into two directories to ensure clarity and maintainability:
+`clilog` is organized for clarity and maintainability:
 
 | Directory/File | Purpose |
 | :--- | :--- |
-| **`bin/clilog`** | The main router and executable. Handles argument validation and directs execution to the correct function. |
-| **`src/functions.sh`** | Contains all the data manipulation logic (add, list, mark) using **`awk`** for secure file editing. |
-| **`src/interactive.sh`** | Provides the interactive TUI mode using **`dialog`** for a more user-friendly terminal interface.
-| **`install.sh`** | Script responsible for copying files to the global directories (`/usr/local/`). |
+| **`bin/clilog`** | Main executable; validates arguments and routes commands. |
+| **`src/functions.sh`** | Core logic for adding, listing, and modifying notes, using **`awk`** for safe file operations. |
+| **`src/interactive.sh`** | TUI interactive mode using **`dialog`** for a user-friendly terminal interface. |
+| **`install.sh`** | Installs the files to global directories (`/usr/local/`). |
 
 ---
 
 ## 🤝 Contributions
 
-Contributions are highly welcome! If you have suggestions for new commands, improvements to the `awk` logic, or Bash optimizations, feel free to open an issue or submit a pull request.
+Contributions are welcome! Whether 
 
 ---
