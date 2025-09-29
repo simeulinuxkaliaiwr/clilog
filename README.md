@@ -1,6 +1,6 @@
 # 🚀 clilog: Manage Your Tasks Directly From the Terminal (CLI Log)
 
-**clilog** is a fast, minimal, and open-source Command Line Interface (CLI) utility, built **100% in Bash**, that allows you to efficiently manage notes, reminders, and to-do lists without relying on complex external software or databases.
+**clilog** is a fast, minimal, and open-source Command Line Interface (CLI) utility, built **in Bash And Python**, that allows you to efficiently manage notes, reminders, and to-do lists without relying on complex external software or databases.
 
 It’s designed to be a native Unix task management tool with a focus on **speed**, **simplicity**, and **minimalism**.
 
