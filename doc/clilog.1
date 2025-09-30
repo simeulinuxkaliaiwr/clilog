@@ -1,0 +1,164 @@
+.TH CLILOG 1 "September 2025" "Version 0.3" "User Manual"
+
+.SH NAME
+clilog \- Minimalist command-line task, note, and log manager with Web and TUI support
+
+.SH SYNOPSIS
+.B clilog
+[\fICOMMAND\fR] [\fIARGUMENTS\fR]
+
+.SH DESCRIPTION
+\fBclilog\fR is a task and note management tool designed for the command line. It adheres to the Unix philosophy of simplicity, speed, and low overhead. It is primarily built with **shell script** (Bash, Awk, Grep) for high performance and portability across minimal environments.
+
+\fBclilog\fR supports three main interface modes:
+.TP
+.B CLI (Command Line Interface)
+Quick access via single-line commands like \fBadd\fR, \fBdone\fR, and \fBlist\fR.
+.TP
+.B TUI (Terminal User Interface)
+Interactive mode accessed via \fBclilog interactive\fR (requires the \fBdialog\fR dependency).
+.TP
+.B Web UI
+A lightweight graphical interface based on Flask, accessed via \fBclilog web\fR.
+
+.SH DEPENDENCIES
+For full functionality, \fBclilog\fR relies on the following tools:
+.TP
+.B bash
+The primary execution shell (modern versions, >= 4.0 recommended).
+.TP
+.B python
+Required for the web mode.
+.TP
+.B python-flask
+The web framework for the \fBclilog web\fR mode.
+.TP
+.B dialog
+Required for the interactive TUI mode (\fBclilog interactive\fR).
+.TP
+.B awk, grep, sed
+Standard system tools used for core data manipulation logic.
+
+.SH COMMANDS
+Commands are listed below. A note's status is indicated by \fB[ ]\fR (pending) or \fB[X]\fR (completed).
+
+.TP
+.B add
+\fBclilog add \fI"Task description"\fR
+Adds a new note or task with the pending status \fB[ ]\fR.
+
+.TP
+.B add with due date
+\fBclilog add \fI"Task description"\fR \fB--due \fIYYYY-MM-DD\fR
+Adds a task with an expiration date (Due Date).
+
+.TP
+.B list
+\fBclilog list\fR
+Lists all existing notes, showing their unique ID, status, and metadata.
+
+.TP
+.B list due
+\fBclilog list due\fR
+Lists all **pending** notes ordered by their Due Date, highlighting overdue tasks and those due today.
+
+.TP
+.B done
+\fBclilog done \fIID\fR
+Marks the note corresponding to the \fIID\fR as completed \fB[X]\fR.
+
+.TP
+.B undo
+\fBclilog undo \fIID\fR
+Unmarks a completed note, returning it to the pending status \fB[ ]\fR.
+
+.TP
+.B del
+\fBclilog del \fIID\fR
+Permanently deletes the note corresponding to the \fIID\fR.
+
+.TP
+.B clear
+\fBclilog clear\fR
+Clears \fBALL\fR notes in \fBnotes.log\fR after security confirmation.
+
+.TP
+.B search
+\fBclilog search \fIkeyword\fR
+Searches all notes for the specified \fIkeyword\fR (case-insensitive).
+
+.TP
+.B edit
+\fBclilog edit \fIID\fR
+Allows editing a specific note by ID. Opens an editor (Vim, Nano, Neovim, etc.) directly to the note's line.
+
+.TP
+.B tag add
+\fBclilog tag add \fIID\fR \fItag\fR
+Adds a tag (e.g., \fB#project\fR) to the specified note.
+
+.TP
+.B tag remove
+\fBclilog tag remove \fIID\fR \fItag\fR
+Removes a tag from the note.
+
+.TP
+.B tag move
+\fBclilog tag move \fIID\fR \fIold\_tag\fR \fInew\_tag\fR
+Renames or moves a tag on a specific note.
+
+.TP
+.B interactive
+\fBclilog interactive\fR
+Starts the TUI (Terminal User Interface) mode.
+
+.TP
+.B export
+\fBclilog export \fIfinal.md\fR \fImarkdown\fR
+Exports all notes to a file in the specified format (\fBmarkdown\fR, \fBjson\fR, or \fBcsv\fR).
+
+.TP
+.B web
+\fBclilog web\fR
+Starts the application's web server, accessible via \fBhttp://localhost:5000\fR (requires Python/Flask).
+
+.TP
+.B version
+\fBclilog version\fR
+Shows the current version of the program.
+
+.TP
+.B help
+\fBclilog help\fR
+Displays the help message and the full list of available commands.
+
+.SH FILES
+.TP
+.I ~/.config/clilog/notes.log
+The central file where all notes, tasks, timestamps, and metadata (tags, due dates) are stored in plain text.
+
+.SH EXAMPLES
+.TP
+.B $ clilog add "Finish clilog man page draft" --due 2025-09-30
+Adds a task with a due date of September 30th.
+.TP
+.B $ clilog list due
+Lists pending tasks, ordered by due date, showing the most urgent first.
+.TP
+.B $ clilog done 1
+Marks note 1 as completed.
+.TP
+.B $ clilog tag add 3 project
+Adds the tag \fB#project\fR to note 3.
+.TP
+.B $ clilog web
+Starts the clilog web interface.
+
+.SH AUTHOR
+The Project Author (Developed with Bash, Awk, Grep).
+
+.SH LICENSE
+MIT License (Check the LICENSE file in the project repository).
+
+.SH SEE ALSO
+bash(1), python(1), dialog(1), vim(1), awk(1), grep(1)
