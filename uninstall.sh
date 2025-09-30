@@ -3,7 +3,7 @@
 set -euo pipefail
 
 echo "Starting Clilog Uninstallation... (Requires sudo!)"
-read -rp "Do you REALLY want to delete clilog from your OS? (s/n): " confirm
+read -rp "Do you REALLY want to delete clilog from your OS? (y/n): " confirm
 if [[ -z "$confirm" ]] || [[ ! "$confirm" =~ ^[Yy]$ ]]; then
 	echo "Ok! Exiting..."
 	exit 0
