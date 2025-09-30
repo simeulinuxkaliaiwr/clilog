@@ -179,7 +179,8 @@ _clilog_tui_search_note() {
 _clilog_tui_export_notes() {
     local format
     local file
-    file=$(dialog --backtitle "Clilog interactive TUI Mode" --inputbox "Enter the name (or ABSOLUTE path) of the file where you want to export your notes:" 6 60 2>&1 >/dev/tty)
+    file=$(dialog --backtitle "Clilog interactive TUI Mode" --inputbox "Enter the name (If you enter only the name, the file will be saved in current directory) or ABSOLUTE path of the file where you want to export your notes:" 10 60 2>&1 >/dev/tty)
+    
     [[ -z "$file" ]] && { dialog --msgbox "Error: You did not specify the file!" 8 50 2>&1 >/dev/tty; return; }
     
     format=$(dialog --backtitle "CLilog Interactive TUI Mode" --menu "Choose a format:" 15 60 3 \

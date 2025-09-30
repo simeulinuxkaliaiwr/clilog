@@ -76,6 +76,7 @@ _clilog_show_help() {
     printf "  \033[32mexport [file] [format]\033[0m - Export notes to file (markdown, json, csv).\n"
     printf "  \033[32mweb\033[0m -  Starts the new clilog web mode (made with python).\n"
     printf "  \033[32madd [TASK] --due YYYY-MM-DD\033[0m - Add a new note/task with Expiration date.\n"
+    printf "  \033[32mstats\033[0m - Show Clilog Stats.\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
@@ -513,4 +514,40 @@ _clilog_list_due_notes() {
         }
 
     '
+}
+
+function _clilog_stats {
+    local total
+    local completed
+    local pending
+    local percent
+
+    if [[ -r "$CLILOG_LOG" ]]; then
+        total=$(grep -c '^.*' "$CLILOG_LOG" 2>/dev/null || echo 0)
+        completed=$(grep -c "^\[X\]" "$CLILOG_LOG" 2>/dev/null || echo 0)
+    else
+        total=0
+        completed=0
+    fi
+
+    total=$(echo "$total" | tr -d '[:space:]')
+    completed=$(echo "$completed" | tr -d '[:space:]')
+
+
+    pending=$(( total - completed ))
+
+    percent=0
+    if (( total > 0 )); then
+        percent=$(( completed * 100 / total ))
+    fi
+
+    echo "📊 Clilog stats:"
+    echo "   Total: $total notes"
+    echo "   Completed: $completed (${percent}%)"
+    echo "   Pending: $pending"
+
+    echo "   Most used tags:"
+    grep -o '#[a-zA-Z0-9_]*' "$CLILOG_LOG" 2>/dev/null | sort | uniq -c | sort -nr | head -3 | while read count tag; do
+        echo "     $tag: $count"
+    done
 }

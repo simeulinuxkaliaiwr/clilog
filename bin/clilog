@@ -24,7 +24,7 @@ case "$COMMAND" in
         fi
         shift 
         ;;
-    list|clear|version|help|tag|interactive|web)
+    list|clear|version|help|tag|interactive|web|stats)
         ;;
     *)
         _clilog_show_help
@@ -96,6 +96,9 @@ case "$COMMAND" in
         ;;
     interactive)
     	main_menu
+	;;
+    stats)
+    	_clilog_stats
 	;;
 esac
 
