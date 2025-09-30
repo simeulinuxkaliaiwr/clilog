@@ -14,10 +14,44 @@ _clilog_setup() {
 
 
 _clilog_add_note() {
-    local NOTE_TEXT="$1"
+    local note_content=""
+    local due_date="-" # Padrão: Sem data de vencimento
     
-    echo "[ ] ($(date +"%Y-%m-%d %H:%M")) ${NOTE_TEXT}" >> "$CLILOG_LOG"
-    echo "Note added." # Additional feedback for the user
+    while [[ $# -gt 0 ]]; do
+        key="$1"
+        case "$key" in
+            --due)
+                if [ -n "$2" ] && date -d "$2" "+%Y-%m-%d" &> /dev/null; then
+                    due_date=$(date -d "$2" "+%Y-%m-%d")
+                    shift # Consome o --due
+                    shift # Consome o valor da data
+                else
+                    echo "Error: Invalid or missing date after --due. Use YYYY-MM-DD."
+                    return 1
+                fi
+                ;;
+            *)
+                note_content+="$1 "
+                shift
+                ;;
+        esac
+    done
+
+    note_content=$(echo "$note_content" | xargs)
+
+    if [ -z "$note_content" ]; then
+        echo "Error: Note content cannot be empty."
+        return 1
+    fi
+
+    local timestamp=$(date +"%Y-%m-%d %H:%M")
+    
+    local new_line="[ ] | Due: $due_date | ($timestamp) $note_content"
+    
+    local next_id=$(wc -l < "$CLILOG_LOG" | awk '{print $1 + 1}')
+    
+    echo "$next_id. $new_line" >> "$CLILOG_LOG"
+    echo "Note $next_id added. Due: $due_date"
 }
 
 _clilog_show_help() {
@@ -41,6 +75,7 @@ _clilog_show_help() {
     printf "  \033[32minteractive \033[0m      - Enter the TUI mode of clilog.\n"
     printf "  \033[32mexport [file] [format]\033[0m - Export notes to file (markdown, json, csv).\n"
     printf "  \033[32mweb\033[0m -  Starts the new clilog web mode (made with python).\n"
+    printf "  \033[32madd [TASK] --due YYYY-MM-DD\033[0m - Add a new note/task with Expiration date.\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
     printf "\033[1mEXAMPLES:\033[0m\n"
@@ -54,13 +89,12 @@ _clilog_list_notes() {
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return; }
 
     awk '{
-        id = NR
-        if ($1 == "[X]") {
-            # Green Color
-            printf "\033[32m%d. %s\033[0m\n", id, $0
+        if ($2 == "[X]") {
+            # Green Color (Completed tasks)
+            printf "\033[32m%s\033[0m\n", $0
         } else {
-            # Yellow Color (for pending)
-            printf "\033[33m%d. %s\033[0m\n", id, $0
+            # Yellow Color (Pending tasks)
+            printf "\033[33m%s\033[0m\n", $0
         }
     }' "$CLILOG_LOG"
 }
@@ -131,24 +165,20 @@ _clilog_search_notes() {
     [[ ! -f "$file" ]] && { echo "No notes found."; return; }
 
     printf "Resultados da busca por '%s':\n" "$keyword"
-    cat -n "$file" | grep -i "$keyword" | awk -v keyword="$keyword" '{
-        id = $1 
+    grep -i "$keyword" "$file" | awk -v keyword="$keyword" '{
         
-        $1 = ""; 
         line_content = $0
         
-        sub(/^  */, "", line_content); 
-
         gsub(keyword, "\033[36m&\033[0m", line_content)
 
-        if (line_content ~ /^\[X\]/) {
-            printf "\033[32m%d. %s\033[0m\n", id, line_content
+        if ($2 == "[X]") {
+            printf "\033[32m%s\033[0m\n", line_content
         } else {
-            printf "\033[33m%d. %s\033[0m\n", id, line_content
+            printf "\033[33m%s\033[0m\n", line_content
         }
     }'
     
-    if [ ${PIPESTATUS[1]} -ne 0 ]; then
+    if [ ${PIPESTATUS[0]} -ne 0 ] && [ ${PIPESTATUS[1]} -ne 0 ]; then
         echo "No notes found for the search."
     fi
 }
@@ -437,3 +467,50 @@ _clilog_show_version() {
     echo "Clilog | Version: $version"
 }
 
+_clilog_list_due_notes() {
+    local file="$CLILOG_LOG"
+    local current_date=$(date +%Y-%m-%d)
+
+    grep -E '^([0-9]+\. )?\[ \].* \| Due: ' "$file" | \
+
+    sort -t'|' -k2 | \
+
+    awk -v current_date="$current_date" '
+        BEGIN {
+            FS = "|";
+            OFS = " | ";
+            print "\n-----------------------------------------------------"
+            print "ID | Status | Due Date   | Note"
+            print "---|--------|------------|----------------------------"
+            count = 1; 
+        }
+
+        {
+
+            status_raw = $1;
+            sub(/^[0-9]+\. /, "", status_raw);
+            gsub(/^[ \t]+|[ \t]+$/, "", status_raw); # Limpa espaços
+
+            due_field = $2;
+            gsub(/^[ \t]+|[ \t]+$/, "", due_field); # Limpa espaços
+            sub(/^Due: /, "", due_field); 
+            due_date = due_field; 
+
+            note_content = $3;
+            gsub(/^[ \t]+|[ \t]+$/, "", note_content); # Limpa espaços
+
+            color_reset = "\033[0m"
+            color = color_reset
+
+            if (due_date < current_date && due_date != "-") {
+                color = "\033[1;31m"; # Vermelho (Atrasado)
+            } else if (due_date == current_date) {
+                color = "\033[1;33m"; # Amarelo (Hoje)
+            }
+
+            printf "%2d %s %s %s %s%s%s\n", count, status_raw, color, due_date, color_reset, OFS, note_content;
+            count++;
+        }
+
+    '
+}
