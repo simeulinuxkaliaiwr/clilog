@@ -56,7 +56,7 @@ _clilog_add_note() {
 
 _clilog_show_help() {
     printf "\n\033[1;36mClilog - CLI Task Manager \033[0m\n"
-    printf "\033[90mVersion:\033[0m 0.2\n\n"
+    printf "\033[90mVersion:\033[0m 0.3\n\n"
     printf "\033[1mUSAGE:\033[0m clilog <command> [arguments]\n\n"
 
     printf "\033[1mCOMMANDS:\033[0m\n"
@@ -463,7 +463,7 @@ _clilog_export_csv() {
 }
 
 _clilog_show_version() {
-    local version="0.2"
+    local version="0.3"
     echo "Clilog | Version: $version"
 }
 
