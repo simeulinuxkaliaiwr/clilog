@@ -7,7 +7,7 @@ source "/usr/local/lib/clilog/functions.sh"
 main_menu() {
     local choice
     while true; do
-        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.3" --menu "Choose a action" 17 60 9 \
+        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.3" --menu "Choose a action" 18 60 9 \
         1 "Add note" \
         2 "Del note" \
         3 "List notes" \
@@ -17,7 +17,8 @@ main_menu() {
         7 "Search for a especific note" \
         8 "Edit a task by ID" \
 	9 "Export notes to file (md, json, csv.)" \
-        10 "Exit interactive mode" \
+        10 "Show clilog Stats" \
+	11 "Exit interactive mode" \
         2>&1 >/dev/tty)
 
         case "$choice" in
@@ -30,7 +31,8 @@ main_menu() {
             7) _clilog_tui_search_note ;;
             8) _clilog_tui_edit_note ;;
             9) _clilog_tui_export_notes ;;
-	    10)
+	    10) _clilog_tui_stats ;;
+	    11)
                 dialog --msgbox "Exiting interactive mode..." 8 70 2>&1 >/dev/tty
                 break
                 ;;
@@ -209,4 +211,8 @@ _clilog_tui_export_notes() {
     	dialog --msgbox "FATAL: Exit code: $result" 8 50 2>&1 >/dev/tty
     fi
 
+}
+
+function _clilog_tui_stats {
+	dialog --msgbox "$(_clilog_stats)" 15 50 2>&1 >/dev/tty
 }
