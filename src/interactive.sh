@@ -7,7 +7,7 @@ source "/usr/local/lib/clilog/functions.sh"
 main_menu() {
     local choice
     while true; do
-        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.3" --menu "Choose a action" 15 60 9 \
+        choice=$(dialog --clear --backtitle "Clilog TUI Interactive" --title "Interactive CliLog Version 0.3" --menu "Choose a action" 17 60 9 \
         1 "Add note" \
         2 "Del note" \
         3 "List notes" \
@@ -40,12 +40,34 @@ main_menu() {
 
 _clilog_tui_add_note() {
     local note
+    local ddue
+    local due
+
     note=$(dialog --inputbox "Enter the content of the note you want to add:" 15 60 2>&1 >/dev/tty)
     if [[ -z "$note" ]]; then
         dialog --msgbox "Error: The content is empty" 8 50 2>&1 >/dev/tty
         return 1
     fi
-    _clilog_add_note "$note"
+
+    ddue=$(dialog --clear --backtitle "Clilog TUI menu V:0.3" --menu "Do you want to specify an expiration date?" 8 50 2 \
+    1 "Yes" \
+    2 "No" \
+    2>&1 >/dev/tty)
+
+    case "$ddue" in
+        1)
+            due=$(dialog --clear --backtitle "Clilog TUI menu V:0.3" --inputbox "Enter the expiration date you want (Sintaxe: YYYY-MM-DD, Ex: 2025-09-30)" 8 50 2>&1 >/dev/tty)
+            if [[ -z "$due" ]]; then
+                dialog --msgbox "Error: Empty Field!" 8 50 2>&1 >/dev/tty
+                return 1
+            fi
+            _clilog_add_note "$note" --due "$due"
+            ;;
+        2)
+            _clilog_add_note "$note"
+            ;;
+    esac
+
     dialog --msgbox "Note added successfully!" 8 50 2>&1 >/dev/tty
 }
 
@@ -169,21 +191,21 @@ _clilog_tui_export_notes() {
     case $format in
         1)
             _clilog_export_md "$file"
-	    if [[ $? -ne 1 ]]; then
-	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
-	    fi
-            ;;
+            result="$?"
+	    ;;
         2)
             _clilog_export_json "$file"
-	    if [[ $? -ne 1 ]]; then
-	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
-	    fi
-            ;;
+            result="$?"
+	    ;;
         3)
             _clilog_export_csv "$file"
-	    if [[ $? -ne 1 ]]; then
-	    	dialog --msgbox "Exported successfully!" 6 60 2>&1 >/dev/tty
-	    fi
-            ;;
+            result="$?"
+	    ;;
     esac
+    if [[ "$result" -eq 0 ]]; then
+    	dialog --msgbox "Exported Successfully!" 8 50 2>&1 >/dev/tty
+    else
+    	dialog --msgbox "FATAL: Exit code: $result" 8 50 2>&1 >/dev/tty
+    fi
+
 }
