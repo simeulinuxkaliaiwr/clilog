@@ -84,8 +84,16 @@ case "$COMMAND" in
         _clilog_export "$@"
 	;;
     web)
-    	python3 "$LIB_PATH/clilog_web.py"
-	;;
+    	echo "Starting Clilog Web Interface..."
+	python3 "$LIB_PATH/clilog_web.py" 2>&1 | awk '
+            /Clilog web interface starting.../ ||
+            /Notes archive::/ ||
+            /^Access:/ ||
+            /Running on http:\/\/127.0.0.1/ {
+                print $0
+            }
+        '
+        ;;
     interactive)
     	main_menu
 	;;
