@@ -90,7 +90,7 @@ def delete_note_from_file(note_id):
         for note in notes:
             f.write(note['raw'] + '\n')
 
-# Template HTML melhorado com Tailwind CSS
+# Template HTML com Tailwind CSS
 HTML_TEMPLATE = '''
 <!DOCTYPE html>
 <html lang="pt-BR">
