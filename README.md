@@ -30,7 +30,7 @@ It’s designed to be a native Unix task management tool with a focus on **speed
 | **`clilog interactive`** | Enter interactive TUI mode with a menu-driven interface. | `clilog interactive` |
 | **`clilog export [file] [format]`** | Export notes to a file .md, .json or .csv. | clilog export $HOME/Documents/tasks.md **`markdown`** |
 | **`clilog web`** | Starts the new clilog web mode made with python | clilog **`web`** |
-| **`clilog add [TASK] --due`** | Adds a new note or task with a expiration date. | `clilog add "Task content" **`--due`** 2025-10-05 |
+| **`clilog add [TASK] --due`** | Adds a new note or task with a expiration date. | `clilog add "Task content" **--due** 2025-10-05 |
 | **`clilog stats`** | Show All Clilog Stats | `clilog stats` |
 
 ---
