@@ -40,14 +40,14 @@ sudo cp "$TEMP_BIN_FILE" "$BIN_DIR/clilog"
 sudo cp "$SOURCE_MAN" "$MAN_DIR" 
 
 echo "Setting execution permissions..."
-sudo chmod +x "$BIN_DIR/clilog"
+sudo chmod +x "$BIN_DIR/clilog" # Make the main executable
 sudo chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
-sudo chmod +x "$LIB_DIR/clilog_web.py" 
+sudo chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
 
 rm "$TEMP_BIN_FILE"
 
 echo ""
-echo "Installation completed successfully! 🔥"
+echo "Installation completed successfully!"
 echo "Test it with: clilog help"
 echo "For more information, read the README or run 'man clilog' !"
 echo "To start the TUI: $LIB_DIR/interactive.sh"

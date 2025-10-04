@@ -85,7 +85,9 @@ This allows for easy backups, manual inspection, and seamless integration with o
 | **`src/functions.sh`** | Core logic for adding, listing, and modifying notes, using **`awk`** for safe file operations. |
 | **`src/interactive.sh`** | TUI interactive mode using **`dialog`** for a user-friendly terminal interface. |
 | **`src/clilog_web.py`** | WEB mode made with python |
+| **`doc/clilog.1`** | The man page. |
 | **`install.sh`** | Installs the files to global directories (`/usr/local/`). |
+| **`uninstall.sh`** | Delete clilog from you OS. |
 
 ---
 
