@@ -308,7 +308,7 @@ HTML_TEMPLATE = '''
             {% else %}
                 <div class="text-center py-12 text-gray-500">
                     <i class="fas fa-inbox text-4xl mb-4"></i>
-                    <p>Nenhuma nota encontrada.</p>
+                    <p>No notes found.</p>
                     <p class="text-sm">Add your first note above!</p>
                 </div>
             {% endif %}
