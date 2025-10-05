@@ -86,6 +86,9 @@ This allows for easy backups, manual inspection, and seamless integration with o
 | **`src/interactive.sh`** | TUI interactive mode using **`dialog`** for a user-friendly terminal interface. |
 | **`src/clilog_web.py`** | WEB mode made with python |
 | **`doc/clilog.1`** | The man page. |
+| **`completions/clilog.fish`** | The completions file for the shell **`fish`** |
+| **`completions/clilog.zsh`** | The completions file for the shell **`zsh`** |
+| **`completions/clilog.bash`** | The completions file for the shell **`bash`** |
 | **`install.sh`** | Installs the files to global directories (`/usr/local/`). |
 | **`uninstall.sh`** | Delete clilog from you OS. |
 
