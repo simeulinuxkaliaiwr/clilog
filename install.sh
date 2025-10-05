@@ -27,6 +27,18 @@ fi
 echo "Creating target directories: $BIN_DIR and $LIB_DIR"
 sudo mkdir -p "$BIN_DIR"
 sudo mkdir -p "$LIB_DIR"
+case $SHELL in
+	*fish)
+		sudo cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
+		;;
+	*bash) 
+		sudo cp "completions/clilog.bash" "/usr/share/bash-completion/completions/clilog"
+		;;
+	*zsh)
+		sudo cp "completions/clilog.zsh" "/usr/share/zsh/site-functions/_clilog"
+		autoload -U compinit && compinit
+		;;
+esac
 
 # Copy binary to temp file to fix the source path
 cp "$SOURCE_BIN" "$TEMP_BIN_FILE"
@@ -43,9 +55,7 @@ echo "Setting execution permissions..."
 sudo chmod +x "$BIN_DIR/clilog" # Make the main executable
 sudo chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
 sudo chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
-
 rm "$TEMP_BIN_FILE"
-
 echo ""
 echo "Installation completed successfully!"
 echo "Test it with: clilog help"
