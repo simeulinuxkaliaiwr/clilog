@@ -278,9 +278,22 @@ _clilog_del_line() {
 
 _clilog_export() {
     local output_file="$1"
-    local format="$2"
+    if [[ -z "${2+x}" ]]; then
+	    printf "\033[31mError: Format not especified.\033[0m\nWhat format do you want?\n1 = markdown\n2 = json\n3 = csv\n"
+	    read -rp "Your choice: " choice
+	    if [[ -z "$choice" ]] || (( $choice > 3 )) || (( $choice < 1 )); then
+		    printf "\033[31mError: Invalid format, exiting...\033[0m\n"
+		    exit 1
+	    fi
+	    case $choice in
+		    1) format="markdown" ;;
+		    2) format="json" ;;
+		    3) format="csv" ;;
+            esac
+    else
+    	local format="$2"
+    fi
     local notes_file="$CLILOG_LOG"
-
     [[ ! -f "$notes_file" ]] && { echo "No notes found!"; return 1; }
     [[ ! -s "$notes_file" ]] && { echo "No notes to export!"; return 1; }
 
