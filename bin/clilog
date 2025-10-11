@@ -38,8 +38,14 @@ case "$COMMAND" in
         _clilog_add_note "$@"
         ;;
     list)
-        _clilog_list_notes
-        ;;
+    	if [[ ! -z "${2+x}" ]]; then
+		if [[ $2 == "due" ]]; then
+			_clilog_list_due_notes
+		fi
+	else
+		_clilog_list_notes
+	fi
+	;;
     done)
         _clilog_mark_done "$@"
         ;;

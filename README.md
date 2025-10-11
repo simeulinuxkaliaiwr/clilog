@@ -14,6 +14,7 @@ It’s designed to be a native Unix task management tool with a focus on **speed
 | :--- | :--- | :--- |
 | **`clilog add [text]`** | Adds a new note or task with a creation timestamp. | `clilog add "Configure the new server"` |
 | **`clilog list`** | Lists all notes, showing IDs and status with color coding. | `clilog list` |
+| **`clilog list due`** | List all **PENDING** notes, sorted by expiration date. | `clilog list due` |
 | **`clilog done [ID]`** | Marks a specific task (by ID) as **completed** (`[X]`). | `clilog done 5` |
 | **`clilog undo [ID]`** | Reverts a completed task back to **pending** (`[ ]`). | `clilog undo 5` |
 | **`clilog del [ID]`** | Permanently deletes a specific note by its ID. | `clilog del 3` |
