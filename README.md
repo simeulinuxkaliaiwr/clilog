@@ -57,6 +57,10 @@ Alternatively, Arch Linux users can install it via the **AUR**:
 ```bash
 yay -S clilog-git
 ```
+Or, if you use paru:
+```bash
+paru -S clilog-git
+```
 
 ---
 
