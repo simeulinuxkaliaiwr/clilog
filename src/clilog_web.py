@@ -186,7 +186,7 @@ HTML_TEMPLATE = '''
             </div>
             <div class="bg-white rounded-lg shadow p-4 text-center">
                 <div class="text-2xl font-bold text-green-600">{{ stats.completed }}</div>
-                <div class="text-gray-600">Concluídas</div>
+                <div class="text-gray-600">Completed</div>
             </div>
             <div class="bg-white rounded-lg shadow p-4 text-center">
                 <div class="text-2xl font-bold text-orange-600">{{ stats.pending }}</div>
@@ -198,16 +198,16 @@ HTML_TEMPLATE = '''
         <div class="bg-white rounded-lg shadow p-4 mb-6">
             <div class="flex flex-col md:flex-row gap-4">
                 <div class="flex-1">
-                    <input type="text" id="searchInput" placeholder="Buscar notas..." 
+                    <input type="text" id="searchInput" placeholder="Search notes..." 
                            class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                            onkeyup="filterNotes()">
                 </div>
                 <div>
                     <select id="statusFilter" onchange="filterNotes()" 
                             class="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="all">Todas</option>
-                        <option value="pending">Pendentes</option>
-                        <option value="completed">Concluídas</option>
+                        <option value="All">All</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Completed">Completed</option>
                     </select>
                 </div>
             </div>
@@ -220,7 +220,7 @@ HTML_TEMPLATE = '''
                        class="flex-1 p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" 
                        placeholder="Add a new note/task...">
                 <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-6 rounded transition duration-200">
-                    <i class="fas fa-plus mr-2"></i>Adicionar
+                    <i class="fas fa-plus mr-2"></i>Add
                 </button>
             </form>
         </div>
@@ -317,7 +317,7 @@ HTML_TEMPLATE = '''
         <!-- Footer -->
         <footer class="text-center mt-8 text-gray-600 text-sm">
             <p>Clilog Web &copy; 2025 | 
-               <a href="/export" class="text-blue-500 hover:text-blue-700">Exportar notas</a> | 
+               <a href="/export" class="text-blue-500 hover:text-blue-700">Export notes</a> | 
                <a href="/api/notes" class="text-blue-500 hover:text-blue-700">API JSON</a>
             </p>
         </footer>
