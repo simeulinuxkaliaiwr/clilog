@@ -2,6 +2,11 @@
 
 set -euo pipefail
 
+if [[ "$EUID" != 0 ]]; then
+	printf "\033[31mError: You MUST run this script with sudo!\033[0m\n"
+	exit 1
+fi
+
 BIN_DIR="/usr/local/bin"
 LIB_DIR="/usr/local/lib/clilog"
 MAN_DIR="/usr/local/share/man/man1"
@@ -14,7 +19,7 @@ SOURCE_MAN="./doc/clilog.1"
 
 TEMP_BIN_FILE="/tmp/clilog.tmp"
 
-echo "Starting Clilog installation (requires sudo)..."
+echo "Starting Clilog installation..."
 
 if [[ -f "$BIN_DIR/clilog" ]]; then
     read -rp "Clilog is already installed. Do you want to update/overwrite it? (y/n): " update
@@ -25,40 +30,39 @@ if [[ -f "$BIN_DIR/clilog" ]]; then
 fi
 
 echo "Creating target directories: $BIN_DIR and $LIB_DIR"
-sudo mkdir -p "$BIN_DIR"
-sudo mkdir -p "$LIB_DIR"
+mkdir -p "$BIN_DIR"
+mkdir -p "$LIB_DIR"
 case $SHELL in
 	*fish)
-		sudo cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
+		cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
 		;;
 	*bash) 
-		sudo cp "completions/clilog.bash" "/usr/share/bash-completion/completions/clilog"
+		cp "completions/clilog.bash" "/usr/share/bash-completion/completions/clilog"
 		;;
 	*zsh)
-		sudo cp "completions/clilog.zsh" "/usr/share/zsh/site-functions/_clilog"
+		cp "completions/clilog.zsh" "/usr/share/zsh/site-functions/_clilog"
 		autoload -U compinit && compinit
 		;;
 esac
 
 # Copy binary to temp file to fix the source path
 cp "$SOURCE_BIN" "$TEMP_BIN_FILE"
-sudo sed -i "s|source \".*functions.sh\"|source \"$LIB_DIR/functions.sh\"|" "$TEMP_BIN_FILE"
+sed -i "s|source \".*functions.sh\"|source \"$LIB_DIR/functions.sh\"|" "$TEMP_BIN_FILE"
 
 echo "Copying files..."
-sudo cp "$SOURCE_LIB" "$LIB_DIR/"
-sudo cp "$SOURCE_TUI" "$LIB_DIR/"
-sudo cp "$SOURCE_WEB" "$LIB_DIR/"
-sudo cp "$TEMP_BIN_FILE" "$BIN_DIR/clilog"
-sudo cp "$SOURCE_MAN" "$MAN_DIR" 
+cp "$SOURCE_LIB" "$LIB_DIR/"
+cp "$SOURCE_TUI" "$LIB_DIR/"
+cp "$SOURCE_WEB" "$LIB_DIR/"
+cp "$TEMP_BIN_FILE" "$BIN_DIR/clilog"
+cp "$SOURCE_MAN" "$MAN_DIR" 
 
 echo "Setting execution permissions..."
-sudo chmod +x "$BIN_DIR/clilog" # Make the main executable
-sudo chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
-sudo chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
+chmod +x "$BIN_DIR/clilog" # Make the main executable
+chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
+chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
 rm "$TEMP_BIN_FILE"
 echo ""
 echo "Installation completed successfully!"
 echo "Test it with: clilog help"
 echo "For more information, read the README or run 'man clilog' !"
 echo "To start the TUI: $LIB_DIR/interactive.sh"
-
