@@ -265,14 +265,22 @@ EOF
 
 _clilog_del_line() {
     local id="$1"
-    
+    local file
+    file="$CLILOG_LOG"
+    local total
+    total=$(wc -l < "$file")
+    if [[ "$id" -gt "$total" ]]; then
+	    printf "\033[31mError: The id that you specified is greater than the number of notes that you have!\033[0m\n"
+	    exit 1
+    fi
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return 1; }
     [[ -z "$id" ]] && { echo "ID not specified, exiting..."; return 1; }
 
     awk -v id="$id" 'NR != id { print }' "$CLILOG_LOG" > "$CLILOG_LOG.tmp" && \
     mv "$CLILOG_LOG.tmp" "$CLILOG_LOG"
-
     echo "Note $id deleted!"
+    awk '{ sub(/^[0-9]+\./, ++i "."); print }' "$CLILOG_LOG" > "$CLILOG_LOG.tmp" && \
+	    mv "$CLILOG_LOG.tmp" "$CLILOG_LOG"
 }
 
 

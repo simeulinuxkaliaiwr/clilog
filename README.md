@@ -35,8 +35,9 @@ It’s designed to be a native Unix task management tool with a focus on **speed
 ---
 
 ## Clilog web interface Preview
+
 <p align="center">
-    <img src="https://raw.githubusercontent.com/simeulinuxkaliaiwr/simeulinuxkaliaiwr/main/clilog_web.jpg" width="500"/>
+    <img src="https://raw.githubusercontent.com/simeulinuxkaliaiwr/simeulinuxkaliaiwr/main/clilog_web.jpg" width="600"/>
 </p>
 
 ---
