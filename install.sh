@@ -7,6 +7,19 @@ if [[ "$EUID" != 0 ]]; then
 	exit 1
 fi
 
+check_dependencies() {
+    local missing=()
+    command -v dialog >/dev/null || missing+=("dialog")
+    command -v python3 >/dev/null || missing+=("python3")
+    if [[ ${#missing[@]} -gt 0 ]]; then
+        echo -e "\033[31mMissing dependencies: \033[0m${missing[*]}"
+        echo "Install them with the package manager of your distro!"
+        exit 1
+    fi
+}
+
+check_dependencies
+
 BIN_DIR="/usr/local/bin"
 LIB_DIR="/usr/local/lib/clilog"
 MAN_DIR="/usr/local/share/man/man1"
