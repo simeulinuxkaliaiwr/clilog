@@ -255,11 +255,46 @@ EOF
 		return 1
 	fi
 	case $choice in
-		1) vim +"$id" "$file" ;;
-		2) nano +"$id" "$file" ;;
-		3) nvim +"$id" "$file" ;;
-		4) emacs +"$id" "$file" ;;
-		5) code --goto "$file:$id" ;;
+		1) 
+			if command -v vim &> /dev/null; then
+				vim +"$id" "$file"
+			else
+				printf "\033[31mError: VIM is not installed, exiting...\033[0m\n"
+				exit 1
+			fi
+			;;
+		2) 
+			if command -v nano &> /dev/null; then
+				nano +"$id" "$file"
+			else
+				printf "\033[31mError: Nano is not installed, exiting...\033[0m\n"
+				exit 1
+			fi
+			;;
+		3) 
+			if command -v nvim &> /dev/null; then
+				nvim +"$id" "$file"
+			else
+				printf "\033[31mError: nvim is not installed, exiting...\033[0m\n"
+				exit 1
+			fi
+			;;
+		4) 
+			if command -v emacs &> /dev/null; then
+				emacs +"$id" "$file"
+			else
+				printf "\033[31mError: Emacs is not installed, exiting...\033[0m\n"
+				exit 1
+			fi
+			;;
+		5) 
+			if command -v code &> /dev/null; then	
+				code --goto "$file:$id"
+			else
+				printf "\033[31mError: Vscode is not installed, exiting...\033[0m\n"
+				exit 1
+			fi
+			;;
 	esac	
 }
 

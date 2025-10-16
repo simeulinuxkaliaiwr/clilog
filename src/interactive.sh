@@ -156,11 +156,41 @@ _clilog_tui_edit_note() {
 	5 "Vscode")
 
 	case $editor in
-		1) vim +"$id" "$file" ;;
-		2) nano +"$id" "$file" ;;
-		3) nvim +"$id" "$file" ;;
-		4) emacs +"$id" "$file" ;;
-		5) code --goto "$file:$id" ;;
+		1) 
+			if command -v vim &> /dev/null; then
+				vim +"$id" "$file"
+			else
+				dialog --msgbox "Error: vim is not installed." 8 50 2>&1 >/dev/tty
+			fi
+			;;
+		2)
+			if command -v nano &> /dev/null; then	
+				nano +"$id" "$file"
+			else
+				dialog --msgbox "Error: nano is not installed." 8 50 2>&1 >/dev/tty
+			fi
+			;;
+		3) 
+			if command -v nvim &> /dev/null; then
+				nvim +"$id" "$file"
+			else
+				dialog --msgbox "Error: nvim is not installed." 8 50 2>&1 >/dev/tty
+			fi
+			;;
+		4) 
+			if command -v emacs &> /dev/null; then
+				emacs +"$id" "$file"
+			else
+				dialog --msgbox "Error: Emacs is not installed." 8 50 2>&1 >/dev/tty
+			fi
+			;;
+		5) 
+			if command -v code &> /dev/null; then
+				code --goto "$file:$id"
+			else
+				dialog --msgbox "Error: Vscode is not installed." 8 50 2>&1 >/dev/tty
+			fi
+			;;
 	esac
 
 }
