@@ -31,9 +31,9 @@ def get_notes():
             if timestamp_match:
                 content = content.replace(timestamp_match.group(0), '').strip()
             
-            tags = re.findall(r'#(\w+)', content)
-            content_without_tags = re.sub(r'#\w+', '', content).strip()
-            
+            TAG_PATTERN = re.compile(r'#(\w+)')
+            tags = TAG_PATTERN.findall(content)
+            content_without_tags = TAG_PATTERN.sub('', content).strip() 
             notes.append({
                 'id': line_num,
                 'status': status,
@@ -428,4 +428,4 @@ if __name__ == "__main__":
     print(f"Notes archive:: {NOTES_FILE}")
     print("Access: http://localhost:5000")
     
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='127.0.0.1', port=5000)
