@@ -61,6 +61,7 @@ _clilog_show_help() {
 
     printf "\033[1mCOMMANDS:\033[0m\n"
     printf "  \033[32madd [text]\033[0m       - Adds a new note/task.\n"
+    printf "  \033[32madd [TASK] --due YYYY-MM-DD\033[0m - Add a new note/task with Expiration date.\n"
     printf "  \033[32mlist\033[0m            - Lists all notes, showing their IDs and status.\n"
     printf "  \033[32mdone [ID]\033[0m       - Marks a specific note (by ID) as completed.\n"
     printf "  \033[32mundo [ID]\033[0m       - Unmarks a completed note, returning it to pending.\n"
@@ -75,7 +76,6 @@ _clilog_show_help() {
     printf "  \033[32minteractive \033[0m      - Enter the TUI mode of clilog.\n"
     printf "  \033[32mexport [file] [format]\033[0m - Export notes to file (markdown, json, csv).\n"
     printf "  \033[32mweb\033[0m -  Starts the new clilog web mode (made with python).\n"
-    printf "  \033[32madd [TASK] --due YYYY-MM-DD\033[0m - Add a new note/task with Expiration date.\n"
     printf "  \033[32mstats\033[0m - Show Clilog Stats.\n"
     printf "  \033[32mhelp\033[0m            - Shows this help message.\n\n"
 
