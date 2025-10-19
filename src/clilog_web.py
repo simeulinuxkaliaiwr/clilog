@@ -169,7 +169,7 @@ HTML_TEMPLATE = '''
                 <h1 class="text-5xl font-bold mb-2">
                     <i class="fas fa-rocket mr-3"></i>Clilog
                 </h1>
-                <p class="text-purple-100 text-lg">Seu gerenciador de tarefas turbinado</p>
+                <p class="text-purple-100 text-lg">Your task manager!</p>
             </div>
         </header>
 
@@ -179,7 +179,7 @@ HTML_TEMPLATE = '''
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-3xl font-bold text-purple-600">{{ stats.total }}</div>
-                        <div class="text-gray-600 dark:text-gray-300 mt-1">Total de Tarefas</div>
+                        <div class="text-gray-600 dark:text-gray-300 mt-1">Total tasks</div>
                     </div>
                     <div class="text-5xl text-purple-200"><i class="fas fa-tasks"></i></div>
                 </div>
@@ -188,7 +188,7 @@ HTML_TEMPLATE = '''
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-3xl font-bold text-green-600">{{ stats.completed }}</div>
-                        <div class="text-gray-600 dark:text-gray-300 mt-1">Concluídas</div>
+                        <div class="text-gray-600 dark:text-gray-300 mt-1">Completed</div>
                     </div>
                     <div class="text-5xl text-green-200"><i class="fas fa-check-circle"></i></div>
                 </div>
@@ -197,7 +197,7 @@ HTML_TEMPLATE = '''
                 <div class="flex items-center justify-between">
                     <div>
                         <div class="text-3xl font-bold text-orange-600">{{ stats.pending }}</div>
-                        <div class="text-gray-600 dark:text-gray-300 mt-1">Pendentes</div>
+                        <div class="text-gray-600 dark:text-gray-300 mt-1">Pending</div>
                     </div>
                     <div class="text-5xl text-orange-200"><i class="fas fa-clock"></i></div>
                 </div>
@@ -216,7 +216,7 @@ HTML_TEMPLATE = '''
                         autocomplete="off"
                     >
                     <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl">
-                        <i class="fas fa-plus mr-2"></i>Adicionar
+                        <i class="fas fa-plus mr-2"></i>Add new task
                     </button>
                 </div>
             </form>
@@ -230,7 +230,7 @@ HTML_TEMPLATE = '''
                     <input 
                         type="text" 
                         id="searchInput" 
-                        placeholder="Buscar tarefas..." 
+                        placeholder="Search tasks..." 
                         class="w-full pl-12 p-3 border-2 border-gray-200 dark:border-gray-600 dark:bg-slate-700 dark:text-white rounded-lg focus:border-purple-500 transition-colors"
                         onkeyup="filterNotes()"
                     >
@@ -297,7 +297,7 @@ HTML_TEMPLATE = '''
                                 {% if note.due_date and note.due_date != '-' %}
                                     <span class="flex items-center gap-1 bg-orange-100 dark:bg-orange-900 text-orange-800 dark:text-orange-200 px-2 py-1 rounded-md">
                                         <i class="fas fa-calendar-alt"></i>
-                                        Vence: {{ note.due_date }}
+                                        EXP date: {{ note.due_date }}
                                     </span>
                                 {% endif %}
                                 
@@ -345,7 +345,7 @@ HTML_TEMPLATE = '''
         <!-- Footer -->
         <footer class="text-center mt-12 text-gray-600 dark:text-gray-400 text-sm">
             <p>Clilog Web v2.0 | 
-               <a href="/export" class="text-purple-600 hover:text-purple-800 dark:text-purple-400">Exportar</a> | 
+               <a href="/export" class="text-purple-600 hover:text-purple-800 dark:text-purple-400">Export</a> | 
                <a href="/api/notes" class="text-purple-600 hover:text-purple-800 dark:text-purple-400">API</a>
             </p>
         </footer>
