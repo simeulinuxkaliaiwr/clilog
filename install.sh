@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+# Root verification
+
 if [[ "$EUID" != 0 ]]; then
 	printf "\033[31mError: You MUST run this script with sudo!\033[0m\n"
 	exit 1
@@ -19,6 +21,8 @@ check_dependencies() {
 }
 
 check_dependencies
+
+# Variables
 
 BIN_DIR="/usr/local/bin"
 LIB_DIR="/usr/local/lib/clilog"
@@ -45,6 +49,9 @@ fi
 echo "Creating target directories: $BIN_DIR and $LIB_DIR"
 mkdir -p "$BIN_DIR"
 mkdir -p "$LIB_DIR"
+
+# Completions for shell
+
 case $SHELL in
 	*fish)
 		cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
