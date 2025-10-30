@@ -102,7 +102,7 @@ This allows for easy backups, manual inspection, and seamless integration with o
 | **`completions/clilog.zsh`** | The completions file for the shell **`zsh`** |
 | **`completions/clilog.bash`** | The completions file for the shell **`bash`** |
 | **`install.sh`** | Installs the files to global directories (`/usr/local/`). |
-| **`uninstall.sh`** | Delete clilog from you OS. |
+| **`uninstall.sh`** | Delete clilog from your OS. |
 
 ---
 
