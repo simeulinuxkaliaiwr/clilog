@@ -90,7 +90,7 @@ _clilog_show_help() {
 _clilog_list_notes() {
 
     [[ ! -f "$CLILOG_LOG" ]] && { echo "No notes found!"; return; }
-
+    [[ ! -s "$CLILOG_LOG" ]] && { echo "No notes found!"; return; }
     awk '{
         if ($2 == "[X]") {
             # Green Color (Completed tasks)
