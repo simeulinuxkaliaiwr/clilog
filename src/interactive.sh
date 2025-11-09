@@ -1,3 +1,5 @@
+# === INTERACTIVE.SH ===
+
 #!/usr/bin/env bash
 
 set -euo pipefail
@@ -104,6 +106,10 @@ _clilog_tui_del_note() {
 
 _clilog_tui_list_notes() {
     if [[ ! -f "$CLILOG_LOG" ]]; then
+        dialog --msgbox "Error: No notes found!" 15 60 2>&1 >/dev/tty
+        return
+    fi
+    if [[ ! -s "$CLILOG_LOG" ]]; then
         dialog --msgbox "Error: No notes found!" 15 60 2>&1 >/dev/tty
         return
     fi

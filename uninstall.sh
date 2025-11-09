@@ -1,3 +1,5 @@
+# === UNINSTALL.SH ===
+
 #!/usr/bin/env bash
 
 set -euo pipefail

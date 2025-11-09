@@ -1,3 +1,5 @@
+# === CLILOG.BASH (completion for shell bash) ===
+
 #!/usr/bin/env bash
 
 _clilog_completions() {
