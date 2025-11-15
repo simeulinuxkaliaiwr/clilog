@@ -523,7 +523,7 @@ _clilog_export_csv() {
 
 _clilog_show_version() {
     local version="0.3"
-    echo "Clilog | Version: $version"
+    printf "\033[34mClilog | Version: $version\033[0m\n"
 }
 
 _clilog_list_due_notes() {
