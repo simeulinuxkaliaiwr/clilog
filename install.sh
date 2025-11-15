@@ -82,7 +82,8 @@ echo "Setting execution permissions..."
 chmod +x "$BIN_DIR/clilog" # Make the main executable
 chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
 chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
-rm "$TEMP_BIN_FILE"
+rm "$TEMP_BIN_FILE" # Delete the temp file
+# === Help Messages ===
 echo ""
 echo "Installation completed successfully!"
 echo "Test it with: clilog help"
