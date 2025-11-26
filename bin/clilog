@@ -93,7 +93,7 @@ case "$COMMAND" in
 	;;
     web)
         echo "Starting Clilog Web Interface..."
-        trap cleanup SIGINT SIGTERM
+        trap _clilog_cleanup SIGINT SIGTERM
 	python3 "$LIB_PATH/clilog_web.py" 2>&1 | awk '
             /Clilog web interface starting.../ ||
             /Notes archive::/ ||
@@ -104,7 +104,7 @@ case "$COMMAND" in
         '
         ;;
     interactive)
-    	trap cleanup SIGINT SIGTERM
+    	trap _clilog_tui_cleanup SIGINT SIGTERM
         main_menu
 	;;
     stats)

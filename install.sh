@@ -7,8 +7,8 @@ set -euo pipefail
 # Root verification
 
 if [[ "$EUID" != 0 ]]; then
-	printf "\033[31mError: You MUST run this script with sudo!\033[0m\n"
-	exit 1
+    printf "\033[31mError: You MUST run this script with sudo!\033[0m\n"
+    exit 1
 fi
 
 check_dependencies() {
@@ -55,16 +55,16 @@ mkdir -p "$LIB_DIR"
 # Completions for shell
 
 case $SHELL in
-	*fish)
-		cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
-		;;
-	*bash) 
-		cp "completions/clilog.bash" "/usr/share/bash-completion/completions/clilog"
-		;;
-	*zsh)
-		cp "completions/clilog.zsh" "/usr/share/zsh/site-functions/_clilog"
-		autoload -U compinit && compinit
-		;;
+*fish)
+    cp "completions/clilog.fish" "$HOME/.config/fish/completions/clilog.fish"
+    ;;
+*bash)
+    cp "completions/clilog.bash" "/usr/share/bash-completion/completions/clilog"
+    ;;
+*zsh)
+    cp "completions/clilog.zsh" "/usr/share/zsh/site-functions/_clilog"
+    autoload -U compinit && compinit
+    ;;
 esac
 
 # Copy binary to temp file to fix the source path
@@ -76,16 +76,16 @@ cp "$SOURCE_LIB" "$LIB_DIR/"
 cp "$SOURCE_TUI" "$LIB_DIR/"
 cp "$SOURCE_WEB" "$LIB_DIR/"
 cp "$TEMP_BIN_FILE" "$BIN_DIR/clilog"
-cp "$SOURCE_MAN" "$MAN_DIR" 
+cp "$SOURCE_MAN" "$MAN_DIR"
 
 echo "Setting execution permissions..."
-chmod +x "$BIN_DIR/clilog" # Make the main executable
-chmod +x "$LIB_DIR/interactive.sh"  # Make TUI executable
-chmod +x "$LIB_DIR/clilog_web.py" # Make WEB mode executable 
-rm "$TEMP_BIN_FILE" # Delete the temp file
+chmod +x "$BIN_DIR/clilog"         # Make the main executable
+chmod +x "$LIB_DIR/interactive.sh" # Make TUI executable
+chmod +x "$LIB_DIR/clilog_web.py"  # Make WEB mode executable
+rm "$TEMP_BIN_FILE"                # Delete the temp file
 # === Help Messages ===
 echo ""
 echo "Installation completed successfully!"
 echo "Test it with: clilog help"
 echo "For more information, read the README or run 'man clilog' !"
-echo "To start the TUI: $LIB_DIR/interactive.sh"
+echo "To start the TUI: clilog interactive"
