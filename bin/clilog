@@ -104,7 +104,8 @@ case "$COMMAND" in
         '
         ;;
     interactive)
-    	main_menu
+    	trap cleanup SIGINT SIGTERM
+        main_menu
 	;;
     stats)
     	_clilog_stats
