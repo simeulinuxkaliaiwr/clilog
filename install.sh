@@ -83,9 +83,14 @@ chmod +x "$BIN_DIR/clilog"         # Make the main executable
 chmod +x "$LIB_DIR/interactive.sh" # Make TUI executable
 chmod +x "$LIB_DIR/clilog_web.py"  # Make WEB mode executable
 rm "$TEMP_BIN_FILE"                # Delete the temp file
+
 # === Help Messages ===
-echo ""
-echo "Installation completed successfully!"
-echo "Test it with: clilog help"
-echo "For more information, read the README or run 'man clilog' !"
-echo "To start the TUI: clilog interactive"
+
+printf "\n"
+cat <<EOF
+Installation completed successfully!
+Test it with: clilog help
+For more information, read the README or run 'man clilog' !
+To start the TUI with dialog: clilog interactive
+To start the web mode with flask: clilog web
+EOF
