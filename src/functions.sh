@@ -14,6 +14,10 @@ _clilog_setup() {
     mkdir -p "$CLILOG_DIR"
 }
 
+_clilog_cleanup() {
+    printf "\n=== \033[34mCTRL ^C pressed! Exiting...\033[0m\n"
+    exit 0
+}
 
 _clilog_add_note() {
     local note_content=""
@@ -250,10 +254,12 @@ _clilog_edit_notes() {
 	3 = Neovim
 	4 = Emacs
 	5 = Vscode
+    6 = Micro
+    7 = Other
 EOF
 	read -rp "Your choice: " choice
-	if [[ -z "$choice" ]] || [[ ! "$choice" =~ ^[1-5]$ ]]; then
-		echo "Error: Your choice must be one of the 5 options, exiting..."
+	if [[ -z "$choice" ]] || [[ ! "$choice" =~ ^[1-7]$ ]]; then
+		echo "Error: Your choice must be one of the 7 options, exiting..."
 		return 1
 	fi
 	case $choice in
@@ -297,6 +303,38 @@ EOF
 				exit 1
 			fi
 			;;
+        6)
+            if command -v &> /dev/null; then
+                micro +"$id" "$file"
+            else
+                printf "\033[31mError: Micro is not installed, exiting.\033[0m\n"
+                exit 1
+            fi
+            ;;
+        7)
+            read -rp "Enter the name of the editor you want to use: " ed
+            min_ed=${ed,,}
+            if [[ -z "$min_ed" ]] || [[ "$min_ed" =~ ^[0-9]+$ ]]; then
+                printf "\033[31mError: Invalid input.\033[0m\n"
+                exit 1
+            elif ! command -v "$min_ed" &> /dev/null; then
+                printf "\033[31mError: $ed is not a valid command.\033[0m\n"
+                exit 1
+            else
+                case "$min_ed" in
+                    "ed") echo "${$id}p" | ed -s "$file" ;;
+                    "gedit") gedir +"${id}" "$file" ;;
+                    "kate") kate -l "$id" "$file" ;;
+                    "geany") geany "+${id}" "$file" ;;
+                    "mousepad") --line "$id" "$file" ;;
+                    "pluma") pluma "+${id}" "$file" ;;
+                    "kwrite") kwrite -l "$id" "$file" ;;
+                    "codium") codium -g "${file}:${id}" ;;
+                    "atom") atom "${file}:${id}" ;;
+                    *)
+                        "${min_ed}" "${file}" ;;
+                esac
+            fi
 	esac	
 }
 

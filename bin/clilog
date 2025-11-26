@@ -92,7 +92,8 @@ case "$COMMAND" in
         _clilog_export "$@"
 	;;
     web)
-    	echo "Starting Clilog Web Interface..."
+        echo "Starting Clilog Web Interface..."
+        trap cleanup SIGINT SIGTERM
 	python3 "$LIB_PATH/clilog_web.py" 2>&1 | awk '
             /Clilog web interface starting.../ ||
             /Notes archive::/ ||
